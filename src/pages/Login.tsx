@@ -41,7 +41,7 @@ export default function Login() {
                             <HardHat className="h-8 w-8" />
                         </div>
                     </div>
-                    <CardTitle className="text-2xl font-bold">Hub Engenharia Pro</CardTitle>
+                    <CardTitle className="text-2xl font-bold">Hub Engenharia Pro 🍌</CardTitle>
                     <CardDescription>Entre com sua conta para acessar as ferramentas</CardDescription>
                 </CardHeader>
                 <form onSubmit={handleLogin}>

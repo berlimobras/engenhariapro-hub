@@ -40,7 +40,7 @@ export function AppSidebar() {
           <HardHat className="h-4 w-4 text-primary-foreground" />
         </div>
         <span className="text-sm font-semibold text-foreground tracking-tight">
-          EngenhariaPro
+          EngenhariaPro 🍌
         </span>
         <div className="ml-auto">
           <ThemeToggle />
