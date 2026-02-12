@@ -9,10 +9,12 @@ import {
   Bell,
   Settings,
   HardHat,
+  LogOut,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAuth } from "@/contexts/AuthContext";
 
 const mainNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -31,6 +33,7 @@ const secondaryNav = [
 
 export function AppSidebar() {
   const location = useLocation();
+  const { signOut, user } = useAuth();
 
   return (
     <aside className="hidden lg:flex lg:w-[260px] lg:flex-col lg:border-r lg:border-border bg-sidebar h-screen sticky top-0">
@@ -84,8 +87,17 @@ export function AppSidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-border px-5 py-3">
-        <p className="text-[11px] text-muted-foreground">v1.0 — EngenhariaPro Hub</p>
+      <div className="border-t border-border px-4 py-3 space-y-2">
+        {user && (
+          <p className="text-[11px] text-muted-foreground truncate">{user.email}</p>
+        )}
+        <button
+          onClick={signOut}
+          className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Sair</span>
+        </button>
       </div>
     </aside>
   );
