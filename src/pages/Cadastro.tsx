@@ -34,18 +34,20 @@ export default function Cadastro() {
             return;
         }
 
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-        });
+        try {
+            const { error } = await supabase.auth.signUp({
+                email,
+                password,
+            });
 
-        if (error) {
-            setError(error.message);
-            setLoading(false);
-        } else {
+            if (error) throw error;
+
             setSuccess(true);
-            setLoading(false);
             setTimeout(() => navigate("/login"), 2000);
+        } catch (error: any) {
+            setError(error.message || "Erro ao criar conta");
+        } finally {
+            setLoading(false);
         }
     };
 

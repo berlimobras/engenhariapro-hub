@@ -1,0 +1,14 @@
+# DESTRAVAR O LOVABLE (MEMÓRIA TRAVADA)
+
+Karen, se o código CHEGOU no GitHub (que eu provei que chegou) mas não aparece no Lovable, é porque o Lovable "travou" na conexão antiga.
+
+Vamos fazer o "reset" da conexão LÁ NO LOVABLE.
+
+1. **No painel do Lovable**, vá em Project Settings (Configurações).
+2. Procure a seção **GitHub**.
+3. Clique em **Mudar Repositório** ou **Desconectar**.
+4. Conecte novamente escolhendo: `berlimobras/engenhariapro-hub`.
+
+Isso obriga o Lovable a baixar tudo de novo do zero. É como reiniciar o roteador quando a internet cai.
+
+Faça isso e ele vai puxar a versão nova (sem banana, com design laranja).

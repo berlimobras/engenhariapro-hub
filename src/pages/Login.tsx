@@ -19,16 +19,18 @@ export default function Login() {
         setLoading(true);
         setError("");
 
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        try {
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
-        if (error) {
-            setError(error.message);
-            setLoading(false);
-        } else {
+            if (error) throw error;
             navigate("/");
+        } catch (error: any) {
+            setError(error.message || "Erro ao fazer login");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -41,7 +43,7 @@ export default function Login() {
                             <HardHat className="h-8 w-8" />
                         </div>
                     </div>
-                    <CardTitle className="text-2xl font-bold">Hub Engenharia Pro 🍌</CardTitle>
+                    <CardTitle className="text-2xl font-bold">Hub Engenharia Pro</CardTitle>
                     <CardDescription>Entre com sua conta para acessar as ferramentas</CardDescription>
                 </CardHeader>
                 <form onSubmit={handleLogin}>
