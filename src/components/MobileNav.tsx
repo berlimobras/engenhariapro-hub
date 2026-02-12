@@ -4,11 +4,6 @@ import {
   Table2,
   BookOpen,
   Menu,
-} from "lucide-react";
-import { NavLink } from "@/components/NavLink";
-import { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import {
   Megaphone,
   FileText,
   CheckSquare,
@@ -16,8 +11,13 @@ import {
   Settings,
   HardHat,
   X,
+  LogOut,
 } from "lucide-react";
+import { NavLink } from "@/components/NavLink";
+import { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const bottomItems = [
@@ -43,6 +43,7 @@ const fullMenu = [
 export function MobileNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const { signOut, user } = useAuth();
 
   return (
     <>
@@ -88,6 +89,17 @@ export function MobileNav() {
                   <span>{item.title}</span>
                 </Link>
               ))}
+              <div className="my-2 border-t border-border" />
+              {user && (
+                <p className="px-3 py-1 text-[11px] text-muted-foreground truncate">{user.email}</p>
+              )}
+              <button
+                onClick={() => { signOut(); setMenuOpen(false); }}
+                className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-destructive transition-colors hover:bg-destructive/10"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Sair</span>
+              </button>
             </nav>
           </motion.div>
         )}

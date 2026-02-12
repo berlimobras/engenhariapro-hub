@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AppLayout } from "./components/AppLayout";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
@@ -25,22 +27,30 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/inteligencia" element={<InteligenciaTecnica />} />
-            <Route path="/marketing" element={<Marketing />} />
-            <Route path="/planilhas" element={<Planilhas />} />
-            <Route path="/prompts" element={<Prompts />} />
-            <Route path="/contratos" element={<Contratos />} />
-            <Route path="/checklists" element={<Checklists />} />
-            <Route path="/atualizacoes" element={<Atualizacoes />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/" element={<Index />} />
+              <Route path="/inteligencia" element={<InteligenciaTecnica />} />
+              <Route path="/marketing" element={<Marketing />} />
+              <Route path="/planilhas" element={<Planilhas />} />
+              <Route path="/prompts" element={<Prompts />} />
+              <Route path="/contratos" element={<Contratos />} />
+              <Route path="/checklists" element={<Checklists />} />
+              <Route path="/atualizacoes" element={<Atualizacoes />} />
+              <Route path="/configuracoes" element={<Configuracoes />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
