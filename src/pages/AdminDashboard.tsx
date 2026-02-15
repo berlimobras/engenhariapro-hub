@@ -7,12 +7,13 @@ import { Shield, Users, Settings, FileText, Database, Mail } from "lucide-react"
 export default function AdminDashboard() {
     const navigate = useNavigate();
 
-    useEffect(() => {
+    /* Admin access check removed for open access */
+    /* useEffect(() => {
         const adminAccess = localStorage.getItem("admin_access");
         if (adminAccess !== "true") {
             navigate("/admin");
         }
-    }, [navigate]);
+    }, [navigate]); */
 
     const adminTools = [
         {

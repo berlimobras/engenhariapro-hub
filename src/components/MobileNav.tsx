@@ -17,7 +17,7 @@ import { NavLink } from "@/components/NavLink";
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
-import { useAuth } from "@/contexts/AuthContext";
+
 import { motion, AnimatePresence } from "framer-motion";
 
 const bottomItems = [
@@ -43,7 +43,8 @@ const fullMenu = [
 export function MobileNav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
-  const { signOut, user } = useAuth();
+  const { signOut, user } = { signOut: () => { }, user: null }; // Mocked or removed
+
 
   return (
     <>
@@ -79,27 +80,17 @@ export function MobileNav() {
                   key={item.url}
                   to={item.url}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors ${
-                    location.pathname === item.url
-                      ? "bg-accent text-foreground font-medium"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                  }`}
+                  className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors ${location.pathname === item.url
+                    ? "bg-accent text-foreground font-medium"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
                 >
                   <item.icon className="h-4 w-4" />
                   <span>{item.title}</span>
                 </Link>
               ))}
               <div className="my-2 border-t border-border" />
-              {user && (
-                <p className="px-3 py-1 text-[11px] text-muted-foreground truncate">{user.email}</p>
-              )}
-              <button
-                onClick={() => { signOut(); setMenuOpen(false); }}
-                className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-destructive transition-colors hover:bg-destructive/10"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Sair</span>
-              </button>
+              {/* Auth elements removed */}
             </nav>
           </motion.div>
         )}
@@ -126,9 +117,8 @@ export function MobileNav() {
               <Link
                 key={item.url}
                 to={item.url}
-                className={`flex flex-col items-center gap-1 transition-colors ${
-                  isActive ? "text-primary" : "text-muted-foreground"
-                }`}
+                className={`flex flex-col items-center gap-1 transition-colors ${isActive ? "text-primary" : "text-muted-foreground"
+                  }`}
               >
                 <item.icon className="h-5 w-5" />
                 <span className="text-[10px]">{item.title}</span>
