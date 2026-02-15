@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { ExternalToolCard } from "@/components/ExternalToolCard";
 import {
   Brain,
@@ -70,6 +73,15 @@ const tools = [
 ];
 
 const Dashboard = () => {
+  const { isAdmin, loading } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && isAdmin) {
+      navigate("/admin/dashboard");
+    }
+  }, [isAdmin, loading, navigate]);
+
   return (
     <div className="animate-fade-in space-y-8">
       {/* Hero Section */}

@@ -26,10 +26,10 @@ export default function Login() {
     const { error } = await signIn(email, password);
     if (error) {
       setError(error.message || "Erro ao fazer login");
-    } else {
-      navigate("/");
+      setLoading(false);
     }
-    setLoading(false);
+    // O redirecionamento acontecerá automaticamente via Navigate no topo
+    // quando o user state for atualizado
   };
 
   return (
