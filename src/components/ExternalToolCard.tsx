@@ -38,7 +38,7 @@ export const ExternalToolCard = ({
           relative overflow-hidden rounded-xl border border-border/40 
           bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-lg p-6
           shadow-elevation-md transition-all duration-300 hover:shadow-elevation-lg
-          hover:border-primary/30 hover:from-card hover:to-card/90
+          hover:border-accent hover:from-card hover:to-card/90
           ${!isLocked ? "cursor-pointer" : "cursor-not-allowed opacity-60"}
         `}
       >
@@ -53,7 +53,7 @@ export const ExternalToolCard = ({
         </div>
 
         {/* Icon */}
-        <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-md group-hover:shadow-lg transition-all">
+        <div className="relative mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-white group-hover:bg-accent shadow-sm group-hover:shadow-md transition-all">
           <div className="transform group-hover:scale-110 transition-transform duration-300">
             {icon}
           </div>

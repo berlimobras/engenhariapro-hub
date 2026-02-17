@@ -16,8 +16,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 218 25% 15%;
 
-    /* Laranja vibrante como cor primária */
-    --primary: 16 100% 60%;
+    /* Cores exatas da referência: #001f3d (azul) e #ff8c00 (laranja) */
+    --primary: 210 100% 12%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 15% 95%;
@@ -26,8 +26,8 @@
     --muted: 220 15% 95%;
     --muted-foreground: 218 12% 45%;
 
-    /* Laranja para accent */
-    --accent: 16 100% 60%;
+    /* Laranja #ff8c00 para accent */
+    --accent: 33 100% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 85% 60%;
@@ -35,19 +35,19 @@
 
     --border: 220 15% 90%;
     --input: 220 15% 92%;
-    --ring: 16 100% 60%;
+    --ring: 33 100% 50%;
 
     --radius: 0.75rem;
 
-    /* Azul escuro profundo para sidebar (conforme referências) */
-    --sidebar-background: 210 65% 12%;
+    /* Azul escuro #001f3d para sidebar */
+    --sidebar-background: 210 100% 12%;
     --sidebar-foreground: 220 15% 85%;
-    --sidebar-primary: 16 100% 60%;
+    --sidebar-primary: 33 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 60% 18%;
     --sidebar-accent-foreground: 220 15% 95%;
     --sidebar-border: 210 50% 20%;
-    --sidebar-ring: 16 100% 60%;
+    --sidebar-ring: 33 100% 50%;
 
     /* Custom tokens vibrantes */
     --surface-elevated: 0 0% 100%;
