@@ -15,12 +15,12 @@ export function LinkCard({ title, description, href, icon, tag }: LinkCardProps)
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col gap-3 rounded-lg border border-border bg-card p-4 transition-all hover:shadow-elevation-md hover:border-primary/20"
+      className="group flex flex-col gap-3 rounded-lg border border-border bg-card p-4 transition-all hover:shadow-elevation-md hover:border-accent"
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15 }}
     >
       <div className="flex items-start justify-between">
-        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-secondary text-muted-foreground">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white group-hover:bg-accent transition-colors">
           {icon}
         </div>
         <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
