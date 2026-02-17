@@ -1,4 +1,4 @@
-import { ExternalToolCard } from "@/components/ExternalToolCard";
+import { ToolCard } from "@/components/ToolCard";
 import {
   Brain,
   Table2,
@@ -95,7 +95,7 @@ const Dashboard = () => {
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {tools.map((tool) => (
-            <ExternalToolCard key={tool.title} {...tool} />
+            <ToolCard key={tool.title} {...tool} />
           ))}
         </div>
       </div>
