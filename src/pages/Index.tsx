@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "@/contexts/AuthContext";
 import { ExternalToolCard } from "@/components/ExternalToolCard";
 import {
   Brain,
@@ -73,13 +73,14 @@ const tools = [
 ];
 
 const Dashboard = () => {
-  /* Admin redirect removed for open access */
+  const { isAdmin, loading } = useAuth();
+  const navigate = useNavigate();
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (!loading && isAdmin) {
       navigate("/admin/dashboard");
     }
-  }, [isAdmin, loading, navigate]); */
+  }, [isAdmin, loading, navigate]);
 
   return (
     <div className="animate-fade-in space-y-8">
