@@ -77,7 +77,7 @@ const Dashboard = () => {
         <div className="absolute inset-0 bg-grid-white/[0.03]" />
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-transparent" />
         <div className="relative">
-          <h1 className="mb-3 text-3xl font-bold">🍎 Hub Engenharia Pro</h1>
+          <h1 className="mb-3 text-3xl font-bold">Hub Engenharia Pro</h1>
           <p className="text-blue-100/90 max-w-2xl leading-relaxed">
             Acesse todas as ferramentas que você precisa para gerenciar suas obras com excelência.
           </p>

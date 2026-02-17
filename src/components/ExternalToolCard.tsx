@@ -52,8 +52,8 @@ export const ExternalToolCard = ({
           </span>
         </div>
 
-        {/* Icon */}
-        <div className="relative mb-5 flex h-12 w-12 items-center justify-center rounded-lg bg-primary text-white group-hover:bg-accent shadow-sm group-hover:shadow-md transition-all">
+        {/* Icon - QUADRADO AZUL que fica LARANJA no hover */}
+        <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-lg bg-primary text-white group-hover:bg-accent shadow-sm group-hover:shadow-md transition-all">
           <div className="transform group-hover:scale-110 transition-transform duration-300">
             {icon}
           </div>
