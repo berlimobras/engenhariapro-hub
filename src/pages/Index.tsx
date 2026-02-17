@@ -72,12 +72,13 @@ const tools = [
 const Dashboard = () => {
   return (
     <div className="animate-fade-in space-y-8">
-      {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8 text-white">
-        <div className="absolute inset-0 bg-grid-white/[0.05]" />
+      {/* Hero Section - Azul Escuro Gradiente */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A1F3D] via-[#1E3A5F] to-[#0D2847] p-8 text-white shadow-elevation-lg">
+        <div className="absolute inset-0 bg-grid-white/[0.03]" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-transparent" />
         <div className="relative">
-          <h1 className="mb-2 text-3xl font-bold">Hub Engenharia Pro</h1>
-          <p className="text-slate-300 max-w-2xl">
+          <h1 className="mb-3 text-3xl font-bold">Hub Engenharia Pro</h1>
+          <p className="text-blue-100/90 max-w-2xl leading-relaxed">
             Acesse todas as ferramentas que você precisa para gerenciar suas obras com excelência.
           </p>
         </div>
@@ -85,9 +86,13 @@ const Dashboard = () => {
 
       {/* Tools Grid */}
       <div>
-        <h2 className="mb-6 text-xl font-semibold text-foreground">
-          Ferramentas Disponíveis
-        </h2>
+        {/* Título com barra laranja lateral (estilo referência) */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-1 h-8 bg-primary rounded-full" />
+          <h2 className="text-xl font-semibold text-foreground">
+            Ferramentas Disponíveis
+          </h2>
+        </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {tools.map((tool) => (
             <ExternalToolCard key={tool.title} {...tool} />

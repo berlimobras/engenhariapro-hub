@@ -53,7 +53,7 @@ export const ExternalToolCard = ({
         </div>
 
         {/* Icon */}
-        <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-sm group-hover:shadow-md transition-all">
+        <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-md group-hover:shadow-lg transition-all">
           <div className="transform group-hover:scale-110 transition-transform duration-300">
             {icon}
           </div>

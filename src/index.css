@@ -39,13 +39,14 @@
 
     --radius: 0.75rem;
 
-    --sidebar-background: 218 25% 15%;
-    --sidebar-foreground: 220 15% 75%;
+    /* Azul escuro profundo para sidebar (conforme referências) */
+    --sidebar-background: 210 65% 12%;
+    --sidebar-foreground: 220 15% 85%;
     --sidebar-primary: 16 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 218 25% 20%;
-    --sidebar-accent-foreground: 220 15% 90%;
-    --sidebar-border: 218 25% 25%;
+    --sidebar-accent: 210 60% 18%;
+    --sidebar-accent-foreground: 220 15% 95%;
+    --sidebar-border: 210 50% 20%;
     --sidebar-ring: 16 100% 60%;
 
     /* Custom tokens vibrantes */
@@ -99,13 +100,14 @@
     --input: 218 25% 16%;
     --ring: 16 100% 60%;
 
-    --sidebar-background: 218 32% 6%;
-    --sidebar-foreground: 220 12% 65%;
+    /* Sidebar dark mode - azul muito escuro */
+    --sidebar-background: 210 70% 8%;
+    --sidebar-foreground: 220 12% 70%;
     --sidebar-primary: 16 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 218 28% 10%;
+    --sidebar-accent: 210 65% 12%;
     --sidebar-accent-foreground: 220 15% 95%;
-    --sidebar-border: 218 28% 12%;
+    --sidebar-border: 210 60% 15%;
     --sidebar-ring: 16 100% 60%;
 
     --surface-elevated: 218 28% 14%;
