@@ -1,6 +1,8 @@
 import { ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 
+// Design: Quadrado azul → laranja no hover
+
 interface LinkCardProps {
   title: string;
   description: string;
