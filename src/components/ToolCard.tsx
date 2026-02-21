@@ -10,62 +10,52 @@ interface ToolCardProps {
     tag: string;
 }
 
-const tagColors: Record<string, string> = {
-    "Google Sheets": "bg-green-100 text-green-700",
-    "Google Docs": "bg-blue-100 text-blue-700",
-    "Canva": "bg-pink-100 text-pink-700",
-    "ChatGPT": "bg-orange-100 text-orange-700",
-    "Notion": "bg-gray-100 text-gray-700",
-    "Trello": "bg-sky-100 text-sky-700",
-};
-
 export const ToolCard = ({ title, description, icon, url, tag }: ToolCardProps) => {
     const handleClick = () => {
         window.open(url, "_blank", "noopener,noreferrer");
     };
 
-    const tagColor = tagColors[tag] || "bg-purple-100 text-purple-700";
-
     return (
         <motion.div
-            whileHover={{ y: -6, scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="group"
+            whileHover={{ y: -5, scale: 1.015 }}
+            whileTap={{ scale: 0.975 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="group h-full"
         >
             <div
                 onClick={handleClick}
-                className="relative overflow-hidden rounded-3xl bg-white p-5 cursor-pointer transition-all"
-                style={{ boxShadow: "0 8px 32px rgba(108, 99, 255, 0.10)" }}
+                className="relative flex flex-col h-full rounded-2xl border border-border bg-card p-5 cursor-pointer
+                   transition-all duration-200 hover:border-accent/50 hover:shadow-lg"
             >
-                {/* Top row: icon + tag */}
-                <div className="flex items-start justify-between mb-4">
-                    {/* Icon circle — gradient roxo */}
-                    <div
-                        className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform group-hover:scale-110"
-                        style={{ background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 100%)" }}
-                    >
-                        {icon}
-                    </div>
+                {/* Tag pill */}
+                <div className="absolute top-4 right-4">
+                    <span className="badge-accent text-[10px]">{tag}</span>
+                </div>
 
-                    {/* Tag pill */}
-                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold ${tagColor}`}>
-                        {tag}
-                    </span>
+                {/* Icon */}
+                <div className="mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-white
+                        shadow-sm transition-all duration-200 group-hover:bg-accent group-hover:shadow-md group-hover:scale-105">
+                    {icon}
                 </div>
 
                 {/* Content */}
-                <h3 className="text-base font-bold text-gray-800 mb-1.5 leading-tight">{title}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed">{description}</p>
+                <h3 className="text-sm font-bold text-foreground mb-1.5 leading-snug pr-12">
+                    {title}
+                </h3>
+                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed flex-1 mb-4">
+                    {description}
+                </p>
 
-                {/* CTA */}
-                <div
-                    className="flex items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-semibold text-white transition-all"
-                    style={{ background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 100%)" }}
-                >
-                    <span>Acessar</span>
-                    <ExternalLink className="h-3.5 w-3.5" />
+                {/* CTA link */}
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-accent
+                        group-hover:gap-2.5 transition-all duration-200">
+                    <span>Acessar ferramenta</span>
+                    <ExternalLink className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                 </div>
+
+                {/* Bottom accent bar */}
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-b-2xl bg-accent
+                        scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
             </div>
         </motion.div>
     );

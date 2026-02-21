@@ -16,6 +16,7 @@ import { NavLink } from "@/components/NavLink";
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "./ThemeToggle";
 
 const bottomItems = [
   { title: "Home", url: "/", icon: LayoutDashboard },
@@ -43,47 +44,77 @@ export function MobileNav() {
 
   return (
     <>
-      {/* Full-screen menu */}
+      {/* ── Full-screen drawer menu ── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed inset-0 z-50 lg:hidden"
-            style={{ background: "linear-gradient(180deg, #3d1a8e 0%, #2d0f6b 100%)" }}
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-50 lg:hidden bg-sidebar"
           >
             {/* Header */}
-            <div className="flex h-16 items-center justify-between px-5 border-b border-white/10">
+            <div className="flex h-16 items-center justify-between px-5 border-b border-sidebar-border">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-2xl"
-                  style={{ background: "linear-gradient(135deg, #FF6B9D, #ff8fab)" }}>
-                  <HardHat className="h-4 w-4 text-white" />
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent">
+                  <HardHat className="h-4.5 w-4.5 text-white" />
                 </div>
-                <span className="text-sm font-bold text-white">EngenhariaPro</span>
+                <div>
+                  <p className="text-sm font-bold text-white">EngenhariaPro</p>
+                  <p className="text-[10px] text-sidebar-foreground/50">Hub de Ferramentas</p>
+                </div>
               </div>
-              <button
-                onClick={() => setMenuOpen(false)}
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 text-white"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl bg-sidebar-accent text-sidebar-foreground hover:text-white transition-colors"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
-            {/* Nav items */}
-            <nav className="px-4 py-5 space-y-1">
-              {fullMenu.map((item) => (
+            {/* Nav links */}
+            <nav className="px-4 py-5 space-y-1 overflow-y-auto h-[calc(100vh-64px)]">
+              <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
+                Principal
+              </p>
+              {fullMenu.slice(0, 7).map((item) => (
                 <Link
                   key={item.url}
                   to={item.url}
                   onClick={() => setMenuOpen(false)}
-                  className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition-all ${location.pathname === item.url
-                      ? "bg-white/15 text-white font-semibold"
-                      : "text-purple-200 hover:bg-white/10 hover:text-white"
+                  className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all ${(item.url === "/" ? location.pathname === "/" : location.pathname.startsWith(item.url))
+                      ? "bg-accent/15 text-white border border-accent/20"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-white"
                     }`}
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10">
-                    <item.icon className="h-4 w-4" />
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-sidebar-foreground/10">
+                    <item.icon className="h-3.5 w-3.5" />
+                  </div>
+                  <span>{item.title}</span>
+                </Link>
+              ))}
+
+              <div className="my-4 border-t border-sidebar-border" />
+
+              <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
+                Sistema
+              </p>
+              {fullMenu.slice(7).map((item) => (
+                <Link
+                  key={item.url}
+                  to={item.url}
+                  onClick={() => setMenuOpen(false)}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all ${location.pathname.startsWith(item.url)
+                      ? "bg-accent/15 text-white border border-accent/20"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-white"
+                    }`}
+                >
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-sidebar-foreground/10">
+                    <item.icon className="h-3.5 w-3.5" />
                   </div>
                   <span>{item.title}</span>
                 </Link>
@@ -93,54 +124,46 @@ export function MobileNav() {
         )}
       </AnimatePresence>
 
-      {/* Bottom bar */}
-      <div
-        className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
-        style={{
-          background: "white",
-          boxShadow: "0 -4px 24px rgba(108,99,255,0.12)",
-          borderRadius: "24px 24px 0 0",
-        }}
-      >
-        <div className="flex h-16 items-center justify-around px-4">
+      {/* ── Bottom tab bar ── */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden border-t border-border bg-card/95 backdrop-blur-md">
+        <div className="flex h-[60px] items-center justify-around px-2 safe-area-bottom">
           {bottomItems.map((item) => {
             if (item.url === "#menu") {
               return (
                 <button
                   key="menu"
                   onClick={() => setMenuOpen(true)}
-                  className="flex flex-col items-center gap-1 text-gray-400"
+                  className="flex flex-col items-center gap-1 min-w-[52px] text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl hover:bg-muted transition-colors">
                     <item.icon className="h-5 w-5" />
                   </div>
                   <span className="text-[9px] font-semibold">{item.title}</span>
                 </button>
               );
             }
+
             const isActive =
               item.url === "/"
                 ? location.pathname === "/"
                 : location.pathname.startsWith(item.url);
+
             return (
               <Link
                 key={item.url}
                 to={item.url}
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center gap-1 min-w-[52px] transition-colors"
               >
                 <div
-                  className={`flex h-9 w-9 items-center justify-center rounded-2xl transition-all ${isActive ? "text-white" : "text-gray-400"
+                  className={`flex h-8 w-8 items-center justify-center rounded-xl transition-all duration-200 ${isActive
+                      ? "bg-primary text-white shadow-sm scale-105"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
-                  style={
-                    isActive
-                      ? { background: "linear-gradient(135deg, #6C63FF, #9b59b6)" }
-                      : {}
-                  }
                 >
                   <item.icon className="h-5 w-5" />
                 </div>
                 <span
-                  className={`text-[9px] font-bold ${isActive ? "text-purple-600" : "text-gray-400"
+                  className={`text-[9px] font-semibold transition-colors ${isActive ? "text-primary" : "text-muted-foreground"
                     }`}
                 >
                   {item.title}
