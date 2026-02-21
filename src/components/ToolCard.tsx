@@ -10,53 +10,61 @@ interface ToolCardProps {
     tag: string;
 }
 
-// NOVO componente - teste com ícones quadrados AZUIS
-export const ToolCard = ({
-    title,
-    description,
-    icon,
-    url,
-    tag,
-}: ToolCardProps) => {
+const tagColors: Record<string, string> = {
+    "Google Sheets": "bg-green-100 text-green-700",
+    "Google Docs": "bg-blue-100 text-blue-700",
+    "Canva": "bg-pink-100 text-pink-700",
+    "ChatGPT": "bg-orange-100 text-orange-700",
+    "Notion": "bg-gray-100 text-gray-700",
+    "Trello": "bg-sky-100 text-sky-700",
+};
+
+export const ToolCard = ({ title, description, icon, url, tag }: ToolCardProps) => {
     const handleClick = () => {
         window.open(url, "_blank", "noopener,noreferrer");
     };
 
+    const tagColor = tagColors[tag] || "bg-purple-100 text-purple-700";
+
     return (
         <motion.div
             whileHover={{ y: -6, scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="group relative"
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="group"
         >
             <div
                 onClick={handleClick}
-                className="relative overflow-hidden rounded-xl border border-border/40 bg-card p-6 shadow-md hover:shadow-lg hover:border-accent transition-all cursor-pointer"
+                className="relative overflow-hidden rounded-3xl bg-white p-5 cursor-pointer transition-all"
+                style={{ boxShadow: "0 8px 32px rgba(108, 99, 255, 0.10)" }}
             >
-                {/* Tag */}
-                <div className="absolute top-4 right-4 z-10">
-                    <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary border border-primary/20">
+                {/* Top row: icon + tag */}
+                <div className="flex items-start justify-between mb-4">
+                    {/* Icon circle — gradient roxo */}
+                    <div
+                        className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform group-hover:scale-110"
+                        style={{ background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 100%)" }}
+                    >
+                        {icon}
+                    </div>
+
+                    {/* Tag pill */}
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold ${tagColor}`}>
                         {tag}
                     </span>
                 </div>
 
-                {/* Icon QUADRADO AZUL → LARANJA */}
-                <div className="relative mb-5 flex h-16 w-16 items-center justify-center rounded-xl bg-[#001f3d] text-white group-hover:bg-[#ff8c00] shadow-sm transition-all">
-                    {icon}
-                </div>
-
                 {/* Content */}
-                <h3 className="relative mb-2 text-lg font-bold text-foreground">
-                    {title}
-                </h3>
-                <p className="relative mb-5 text-sm text-muted-foreground line-clamp-2">
-                    {description}
-                </p>
+                <h3 className="text-base font-bold text-gray-800 mb-1.5 leading-tight">{title}</h3>
+                <p className="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed">{description}</p>
 
-                {/* Action */}
-                <div className="relative flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-                    <span>Acessar ferramenta</span>
-                    <ExternalLink className="h-4 w-4" />
+                {/* CTA */}
+                <div
+                    className="flex items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-semibold text-white transition-all"
+                    style={{ background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 100%)" }}
+                >
+                    <span>Acessar</span>
+                    <ExternalLink className="h-3.5 w-3.5" />
                 </div>
             </div>
         </motion.div>

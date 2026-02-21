@@ -11,8 +11,6 @@ import {
   HardHat,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
-import { useLocation } from "react-router-dom";
-import { ThemeToggle } from "./ThemeToggle";
 
 const mainNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -30,26 +28,39 @@ const secondaryNav = [
 ];
 
 export function AppSidebar() {
-  const location = useLocation();
-
   return (
-    <aside className="hidden lg:flex lg:w-[260px] lg:flex-col lg:border-r lg:border-border bg-sidebar h-screen sticky top-0">
+    <aside className="hidden lg:flex lg:w-[260px] lg:flex-col h-screen sticky top-0"
+      style={{ background: "linear-gradient(180deg, #3d1a8e 0%, #2d0f6b 100%)" }}>
+
       {/* Brand */}
-      <div className="flex h-14 items-center gap-2.5 px-5 border-b border-border">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-          <HardHat className="h-4 w-4 text-primary-foreground" />
+      <div className="flex h-16 items-center gap-3 px-6 border-b border-white/10">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl"
+          style={{ background: "linear-gradient(135deg, #FF6B9D, #ff8fab)" }}>
+          <HardHat className="h-5 w-5 text-white" />
         </div>
-        <span className="text-sm font-semibold text-foreground tracking-tight">
-          EngenhariaPro 🍌
-        </span>
-        <div className="ml-auto">
-          <ThemeToggle />
+        <div>
+          <span className="text-sm font-bold text-white tracking-tight block">EngenhariaPro</span>
+          <span className="text-[10px] text-purple-300 font-medium">Hub de Ferramentas</span>
+        </div>
+      </div>
+
+      {/* User greeting */}
+      <div className="px-6 py-5 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full"
+            style={{ background: "linear-gradient(135deg, #6C63FF, #9b59b6)" }}>
+            <span className="text-sm font-bold text-white">EP</span>
+          </div>
+          <div>
+            <p className="text-xs text-purple-300 font-medium">Bem-vindo de volta!</p>
+            <p className="text-sm font-bold text-white">Engenheiro Pro</p>
+          </div>
         </div>
       </div>
 
       {/* Main nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
-        <p className="px-2 mb-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+      <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-1">
+        <p className="px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-purple-400">
           Principal
         </p>
         {mainNav.map((item) => (
@@ -57,31 +68,44 @@ export function AppSidebar() {
             key={item.url}
             to={item.url}
             end={item.url === "/"}
-            className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-            activeClassName="bg-sidebar-accent text-foreground font-medium"
+            className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm text-purple-200 transition-all hover:bg-white/10 hover:text-white"
+            activeClassName="bg-white/15 text-white font-semibold shadow-inner"
           >
-            <item.icon className="h-4 w-4 shrink-0" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10">
+              <item.icon className="h-4 w-4" />
+            </div>
             <span>{item.title}</span>
           </NavLink>
         ))}
 
-        <div className="my-4 border-t border-border" />
+        <div className="my-4 border-t border-white/10" />
 
-        <p className="px-2 mb-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+        <p className="px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-purple-400">
           Sistema
         </p>
         {secondaryNav.map((item) => (
           <NavLink
             key={item.url}
             to={item.url}
-            className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-            activeClassName="bg-sidebar-accent text-foreground font-medium"
+            className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm text-purple-200 transition-all hover:bg-white/10 hover:text-white"
+            activeClassName="bg-white/15 text-white font-semibold"
           >
-            <item.icon className="h-4 w-4 shrink-0" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10">
+              <item.icon className="h-4 w-4" />
+            </div>
             <span>{item.title}</span>
           </NavLink>
         ))}
       </nav>
+
+      {/* Footer */}
+      <div className="px-6 py-4 border-t border-white/10">
+        <div className="rounded-2xl p-3"
+          style={{ background: "linear-gradient(135deg, rgba(108,99,255,0.3), rgba(155,89,182,0.3))" }}>
+          <p className="text-[11px] font-semibold text-white mb-0.5">🚀 Engenharia Pro</p>
+          <p className="text-[10px] text-purple-300">Plano Premium Ativo</p>
+        </div>
+      </div>
     </aside>
   );
 }

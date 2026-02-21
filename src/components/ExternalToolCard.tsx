@@ -28,59 +28,54 @@ export const ExternalToolCard = ({
   return (
     <motion.div
       whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="group relative"
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="group"
     >
       <div
         onClick={handleClick}
-        className={`
-          relative overflow-hidden rounded-xl border border-border/40 
-          bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-lg p-6
-          shadow-elevation-md transition-all duration-300 hover:shadow-elevation-lg
-          hover:border-accent hover:from-card hover:to-card/90
-          ${!isLocked ? "cursor-pointer" : "cursor-not-allowed opacity-60"}
-        `}
+        className={`relative overflow-hidden rounded-3xl bg-white p-5 transition-all ${!isLocked ? "cursor-pointer" : "cursor-not-allowed opacity-60"
+          }`}
+        style={{ boxShadow: "0 8px 32px rgba(108, 99, 255, 0.10)" }}
       >
-        {/* Gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-        {/* Tag */}
-        <div className="absolute top-4 right-4 z-10">
-          <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary border border-primary/20">
+        {/* Top row: icon + tag */}
+        <div className="flex items-start justify-between mb-4">
+          <div
+            className="flex h-14 w-14 items-center justify-center rounded-2xl text-white shadow-md transition-transform group-hover:scale-110"
+            style={
+              isLocked
+                ? { background: "#aaa" }
+                : { background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 100%)" }
+            }
+          >
+            {icon}
+          </div>
+          <span className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold bg-purple-100 text-purple-700">
             {tag}
           </span>
         </div>
 
-        {/* Icon - QUADRADO AZUL que fica LARANJA no hover */}
-        <div className="relative mb-5 flex h-14 w-14 items-center justify-center rounded-lg bg-primary text-white group-hover:bg-accent shadow-sm group-hover:shadow-md transition-all">
-          <div className="transform group-hover:scale-110 transition-transform duration-300">
-            {icon}
-          </div>
-        </div>
-
         {/* Content */}
-        <h3 className="relative mb-2 text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-          {title}
-        </h3>
-        <p className="relative mb-5 text-sm text-muted-foreground line-clamp-2 leading-relaxed">
-          {description}
-        </p>
+        <h3 className="text-base font-bold text-gray-800 mb-1.5 leading-tight">{title}</h3>
+        <p className="text-sm text-gray-500 line-clamp-2 mb-4 leading-relaxed">{description}</p>
 
-        {/* Action */}
-        <div className="relative flex items-center justify-between">
-          {isLocked ? (
-            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-              <Lock className="h-4 w-4" />
-              <span>Assine para acessar</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 text-sm font-semibold text-primary group-hover:gap-3 transition-all">
-              <span>Acessar ferramenta</span>
-              <ExternalLink className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
-            </div>
-          )}
-        </div>
+        {/* CTA */}
+        {isLocked ? (
+          <div
+            className="flex items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-semibold bg-gray-100 text-gray-500"
+          >
+            <Lock className="h-3.5 w-3.5" />
+            <span>Assine para acessar</span>
+          </div>
+        ) : (
+          <div
+            className="flex items-center justify-center gap-2 rounded-2xl py-2.5 text-sm font-semibold text-white transition-all"
+            style={{ background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 100%)" }}
+          >
+            <span>Acessar ferramenta</span>
+            <ExternalLink className="h-3.5 w-3.5" />
+          </div>
+        )}
       </div>
     </motion.div>
   );

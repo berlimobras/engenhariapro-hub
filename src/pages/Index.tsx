@@ -8,6 +8,9 @@ import {
   Wrench,
   FileSpreadsheet,
   HardHat,
+  TrendingUp,
+  Users,
+  Star,
 } from "lucide-react";
 
 const tools = [
@@ -69,31 +72,85 @@ const tools = [
   },
 ];
 
+const stats = [
+  { label: "Ferramentas", value: "8+", icon: <Star className="h-5 w-5" />, color: "#FF6B9D" },
+  { label: "Projetos Ativos", value: "12", icon: <TrendingUp className="h-5 w-5" />, color: "#6C63FF" },
+  { label: "Membros", value: "340", icon: <Users className="h-5 w-5" />, color: "#4CAF50" },
+];
+
 const Dashboard = () => {
   return (
-    <div className="animate-fade-in space-y-8">
-      {/* Hero Section - Azul Escuro Gradiente */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A1F3D] via-[#1E3A5F] to-[#0D2847] p-8 text-white shadow-elevation-lg">
-        <div className="absolute inset-0 bg-grid-white/[0.03]" />
-        <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-transparent" />
+    <div className="space-y-8">
+
+      {/* Hero Section */}
+      <div
+        className="relative overflow-hidden rounded-3xl p-7 text-white"
+        style={{ background: "linear-gradient(135deg, #6C63FF 0%, #9b59b6 60%, #c0392b 100%)" }}
+      >
+        {/* Decorative circles */}
+        <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-white/10" />
+        <div className="absolute -right-4 top-16 h-24 w-24 rounded-full bg-white/5" />
+        <div className="absolute bottom-0 left-1/3 h-32 w-32 rounded-full bg-white/5" />
+
         <div className="relative">
-          <h1 className="mb-3 text-3xl font-bold">Hub Engenharia Pro</h1>
-          <p className="text-blue-100/90 max-w-2xl leading-relaxed">
-            Acesse todas as ferramentas que você precisa para gerenciar suas obras com excelência.
+          <p className="text-purple-200 text-sm font-medium mb-1">Olá, Engenheiro! 👋</p>
+          <h1 className="text-3xl font-extrabold mb-2 leading-tight">
+            Hub Engenharia Pro
+          </h1>
+          <p className="text-purple-100 text-sm max-w-lg leading-relaxed mb-6">
+            Acesse todas as ferramentas que você precisa para gerenciar suas obras com excelência e eficiência.
           </p>
+
+          <div className="flex gap-3 flex-wrap">
+            <button
+              className="inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-bold text-purple-700 transition-all hover:scale-105 active:scale-95"
+              style={{ background: "white" }}
+            >
+              🚀 Explorar ferramentas
+            </button>
+            <button
+              className="inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-bold text-white border border-white/30 transition-all hover:bg-white/10"
+            >
+              📖 Ver Tutoriais
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* Stats row */}
+      <div className="grid grid-cols-3 gap-4">
+        {stats.map((stat) => (
+          <div
+            key={stat.label}
+            className="rounded-3xl bg-white p-4 flex items-center gap-3"
+            style={{ boxShadow: "0 6px 24px rgba(108,99,255,0.10)" }}
+          >
+            <div
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white"
+              style={{ background: stat.color }}
+            >
+              {stat.icon}
+            </div>
+            <div>
+              <p className="text-xl font-extrabold text-gray-800">{stat.value}</p>
+              <p className="text-xs text-gray-500 font-medium">{stat.label}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Tools Grid */}
       <div>
-        {/* Título com barra laranja lateral (estilo referência) */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-1 h-8 bg-primary rounded-full" />
-          <h2 className="text-xl font-semibold text-foreground">
-            Ferramentas Disponíveis
-          </h2>
+        {/* Section title */}
+        <div className="flex items-center gap-3 mb-5">
+          <div
+            className="h-7 w-1.5 rounded-full"
+            style={{ background: "linear-gradient(180deg, #6C63FF, #FF6B9D)" }}
+          />
+          <h2 className="text-lg font-bold text-gray-800">Ferramentas Disponíveis</h2>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {tools.map((tool) => (
             <ToolCard key={tool.title} {...tool} />
           ))}
