@@ -17,45 +17,55 @@ export const ToolCard = ({ title, description, icon, url, tag }: ToolCardProps) 
 
     return (
         <motion.div
-            whileHover={{ y: -5, scale: 1.015 }}
-            whileTap={{ scale: 0.975 }}
-            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -6 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="group h-full"
+            onClick={handleClick}
         >
-            <div
-                onClick={handleClick}
-                className="relative flex flex-col h-full rounded-2xl border border-border bg-card p-5 cursor-pointer
-                   transition-all duration-200 hover:border-accent/50 hover:shadow-lg"
-            >
-                {/* Tag pill */}
-                <div className="absolute top-4 right-4">
-                    <span className="badge-accent text-[10px]">{tag}</span>
-                </div>
+            <div className="relative flex flex-col h-full rounded-2xl overflow-hidden border border-border bg-card cursor-pointer shadow-sm hover:shadow-xl hover:border-accent/40 transition-all duration-300">
 
-                {/* Icon */}
-                <div className="mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary text-white
-                        shadow-sm transition-all duration-200 group-hover:bg-accent group-hover:shadow-md group-hover:scale-105">
-                    {icon}
+                {/* Top colored band with icon */}
+                <div className="relative h-28 bg-primary flex items-center justify-center overflow-hidden">
+                    {/* Background pattern */}
+                    <div className="absolute inset-0 opacity-10"
+                        style={{
+                            backgroundImage: `radial-gradient(circle at 20% 50%, white 1px, transparent 1px),
+                                radial-gradient(circle at 80% 20%, white 1px, transparent 1px)`,
+                            backgroundSize: "30px 30px"
+                        }}
+                    />
+                    {/* Decorative circle */}
+                    <div className="absolute -right-8 -bottom-8 h-24 w-24 rounded-full bg-white/5" />
+                    <div className="absolute -left-4 -top-4 h-16 w-16 rounded-full bg-white/5" />
+
+                    {/* Icon box */}
+                    <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 text-white ring-2 ring-white/20 shadow-lg group-hover:bg-accent group-hover:ring-accent/40 transition-all duration-300">
+                        <div className="scale-125">{icon}</div>
+                    </div>
+
+                    {/* Tag */}
+                    <div className="absolute top-3 right-3">
+                        <span className="rounded-full bg-black/30 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold text-white/90">
+                            {tag}
+                        </span>
+                    </div>
                 </div>
 
                 {/* Content */}
-                <h3 className="text-sm font-bold text-foreground mb-1.5 leading-snug pr-12">
-                    {title}
-                </h3>
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed flex-1 mb-4">
-                    {description}
-                </p>
+                <div className="flex flex-col flex-1 p-5">
+                    <h3 className="text-sm font-bold text-foreground mb-2 leading-snug">{title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed flex-1 mb-4">{description}</p>
 
-                {/* CTA link */}
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-accent
-                        group-hover:gap-2.5 transition-all duration-200">
-                    <span>Acessar ferramenta</span>
-                    <ExternalLink className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                    {/* CTA Button */}
+                    <button className="w-full flex items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold
+            bg-primary/8 text-primary border border-primary/15
+            group-hover:bg-accent group-hover:text-white group-hover:border-accent
+            transition-all duration-300">
+                        <span>Acessar ferramenta</span>
+                        <ExternalLink className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
                 </div>
-
-                {/* Bottom accent bar */}
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-b-2xl bg-accent
-                        scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
             </div>
         </motion.div>
     );
