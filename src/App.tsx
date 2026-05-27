@@ -3,7 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AdminProvider } from "./contexts/AdminContext";
 import { AppLayout } from "./components/AppLayout";
+
+// Pages
 import Index from "./pages/Index";
 import InteligenciaTecnica from "./pages/InteligenciaTecnica";
 import Marketing from "./pages/Marketing";
@@ -22,22 +25,24 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/inteligencia" element={<InteligenciaTecnica />} />
-            <Route path="/marketing" element={<Marketing />} />
-            <Route path="/planilhas" element={<Planilhas />} />
-            <Route path="/prompts" element={<Prompts />} />
-            <Route path="/contratos" element={<Contratos />} />
-            <Route path="/checklists" element={<Checklists />} />
-            <Route path="/atualizacoes" element={<Atualizacoes />} />
-            <Route path="/configuracoes" element={<Configuracoes />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AdminProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/ferramentas/inteligencia" element={<InteligenciaTecnica />} />
+              <Route path="/ferramentas/marketing" element={<Marketing />} />
+              <Route path="/ferramentas/planilhas" element={<Planilhas />} />
+              <Route path="/ferramentas/prompts" element={<Prompts />} />
+              <Route path="/ferramentas/contratos" element={<Contratos />} />
+              <Route path="/ferramentas/checklists" element={<Checklists />} />
+              <Route path="/atualizacoes" element={<Atualizacoes />} />
+              <Route path="/configuracoes" element={<Configuracoes />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AdminProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

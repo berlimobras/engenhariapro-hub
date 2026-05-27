@@ -86,18 +86,25 @@ export function AppSidebar() {
         ))}
       </nav>
 
-      {/* Footer CTA */}
-      <div className="px-4 pb-5 shrink-0">
+      {/* User info + Footer CTA */}
+      <div className="px-4 pb-5 shrink-0 space-y-4">
+        {/* User section */}
+        <div className="rounded-xl bg-sidebar-accent/30 p-3 border border-sidebar-border">
+          <p className="text-[10px] text-sidebar-foreground/60 font-medium mb-1">LOGADO COMO</p>
+          <p className="text-xs font-semibold text-white">Admin Local</p>
+          <p className="text-[10px] text-sidebar-foreground/60">admin@obradomestre.local</p>
+        </div>
+
         <div className="rounded-xl p-3.5 border border-accent/25"
           style={{ background: "linear-gradient(135deg, rgba(255,140,0,0.15) 0%, rgba(0,31,61,0.4) 100%)" }}>
           <div className="flex items-center gap-2.5 mb-2">
             <div className="h-6 w-6 rounded-md bg-accent/80 flex items-center justify-center">
               <span className="text-[10px] text-white font-bold">★</span>
             </div>
-            <p className="text-xs font-bold text-white">Plano Premium</p>
+            <p className="text-xs font-bold text-white">Modo Teste</p>
           </div>
           <p className="text-[10px] text-sidebar-foreground/60 leading-relaxed">
-            Todas as ferramentas desbloqueadas
+            Sem autenticação - dados locais
           </p>
         </div>
       </div>
