@@ -9,18 +9,22 @@ import {
   Bell,
   Settings,
   HardHat,
+  Building2,
+  Users,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { ThemeToggle } from "./ThemeToggle";
 
 const mainNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Inteligência Técnica", url: "/inteligencia", icon: Brain },
-  { title: "Marketing", url: "/marketing", icon: Megaphone },
-  { title: "Planilhas & Orçamentos", url: "/planilhas", icon: Table2 },
-  { title: "Biblioteca de Prompts", url: "/prompts", icon: BookOpen },
-  { title: "Contratos & Docs", url: "/contratos", icon: FileText },
-  { title: "Checklists", url: "/checklists", icon: CheckSquare },
+  { title: "Obras", url: "/obras", icon: Building2 },
+  { title: "Funcionários", url: "/funcionarios", icon: Users },
+  { title: "Inteligência Técnica", url: "/ferramentas/inteligencia", icon: Brain },
+  { title: "Marketing", url: "/ferramentas/marketing", icon: Megaphone },
+  { title: "Planilhas & Orçamentos", url: "/ferramentas/planilhas", icon: Table2 },
+  { title: "Biblioteca de Prompts", url: "/ferramentas/prompts", icon: BookOpen },
+  { title: "Contratos & Docs", url: "/ferramentas/contratos", icon: FileText },
+  { title: "Checklists", url: "/ferramentas/checklists", icon: CheckSquare },
 ];
 
 const secondaryNav = [
