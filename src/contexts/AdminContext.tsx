@@ -14,16 +14,20 @@ interface AdminContextType {
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
+// UUID válido para uso em modo teste
+const DEMO_COMPANY_ID = '550e8400-e29b-41d4-a716-446655440000';
+const DEMO_USER_ID = '550e8400-e29b-41d4-a716-446655440001';
+
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const adminUser = {
-    id: 'admin-001',
+    id: DEMO_USER_ID,
     email: 'admin@obradomestre.local',
     name: 'Administrador',
-    companyId: 'company-001',
+    companyId: DEMO_COMPANY_ID,
     companyName: 'ObraDoMestre Demo',
   };
 
-  const [currentCompanyId, setCurrentCompanyId] = useState('company-001');
+  const [currentCompanyId, setCurrentCompanyId] = useState(DEMO_COMPANY_ID);
 
   return (
     <AdminContext.Provider value={{ adminUser, currentCompanyId, setCurrentCompanyId }}>
