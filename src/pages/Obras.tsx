@@ -6,19 +6,34 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Building2 } from 'lucide-react';
+import { Plus, Trash2, Building2, Zap } from 'lucide-react';
+import { seedDatabase } from '@/lib/seedData';
 
 export default function Obras() {
   const { adminUser } = useAdmin();
-  const { data: obras = [], isLoading } = useObras(adminUser.companyId);
+  const { data: obras = [], isLoading, refetch } = useObras(adminUser.companyId);
   const createObra = useCreateObra();
   const [showForm, setShowForm] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     address: '',
     client_name: '',
     budget_estimated: '',
   });
+
+  const handlePopulateExamples = async () => {
+    setIsSeeding(true);
+    const result = await seedDatabase(adminUser.companyId);
+    setIsSeeding(false);
+
+    if (result.success) {
+      toast.success('Dados de exemplo adicionados com sucesso!');
+      refetch();
+    } else {
+      toast.error('Erro ao adicionar dados de exemplo');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,12 +137,23 @@ export default function Obras() {
         </div>
       )}
 
-      {/* Button */}
+      {/* Buttons */}
       {!showForm && (
-        <Button onClick={() => setShowForm(true)} className="gap-2">
-          <Plus className="h-4 w-4" />
-          Nova Obra
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setShowForm(true)} className="gap-2">
+            <Plus className="h-4 w-4" />
+            Nova Obra
+          </Button>
+          <Button
+            onClick={handlePopulateExamples}
+            disabled={isSeeding}
+            variant="outline"
+            className="gap-2"
+          >
+            <Zap className="h-4 w-4" />
+            {isSeeding ? 'Carregando exemplos...' : 'Carregar Exemplos'}
+          </Button>
+        </div>
       )}
 
       {/* List */}
