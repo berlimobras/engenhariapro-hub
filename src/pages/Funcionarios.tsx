@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { useFuncionarios, useCreateFuncionario } from '@/hooks/useFuncionarios';
+import { useFuncionarios, useCreateFuncionario, useUpdateFuncionario, useDeleteFuncionario } from '@/hooks/useFuncionarios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Users, Zap } from 'lucide-react';
-import { seedDatabase } from '@/lib/seedData';
+import { Plus, Trash2, Users, Pencil } from 'lucide-react';
 
 export default function Funcionarios() {
   const { adminUser } = useAdmin();
-  const { data: funcionarios = [], isLoading, refetch } = useFuncionarios(adminUser.companyId);
+  const { data: funcionarios = [], isLoading } = useFuncionarios(adminUser.companyId);
   const createFuncionario = useCreateFuncionario();
+  const updateFuncionario = useUpdateFuncionario();
+  const deleteFuncionario = useDeleteFuncionario();
   const [showForm, setShowForm] = useState(false);
-  const [isSeeding, setIsSeeding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     cpf: '',
@@ -24,16 +25,25 @@ export default function Funcionarios() {
     salary: '',
   });
 
-  const handlePopulateExamples = async () => {
-    setIsSeeding(true);
-    const result = await seedDatabase(adminUser.companyId);
-    setIsSeeding(false);
+  const handleEdit = (func: any) => {
+    setFormData({
+      name: func.name || '',
+      cpf: func.cpf || '',
+      phone: func.phone || '',
+      email: func.email || '',
+      role: func.role || '',
+      salary: func.salary ? String(func.salary) : '',
+    });
+    setEditingId(func.id);
+    setShowForm(true);
+  };
 
-    if (result.success) {
-      toast.success('Dados de exemplo adicionados com sucesso!');
-      refetch();
-    } else {
-      toast.error('Erro ao adicionar dados de exemplo');
+  const handleDelete = (id: string) => {
+    if (confirm('Tem certeza que deseja excluir este funcionário?')) {
+      deleteFuncionario.mutate({ id, company_id: adminUser.companyId }, {
+        onSuccess: () => toast.success('Funcionário excluído com sucesso!'),
+        onError: (err: any) => toast.error('Erro ao excluir: ' + err.message)
+      });
     }
   };
 
@@ -44,28 +54,46 @@ export default function Funcionarios() {
       return;
     }
 
-    createFuncionario.mutate(
-      {
-        company_id: adminUser.companyId,
-        name: formData.name,
-        cpf: formData.cpf || undefined,
-        phone: formData.phone || undefined,
-        email: formData.email || undefined,
-        role: formData.role || undefined,
-        salary: formData.salary ? parseFloat(formData.salary) : undefined,
-        status: 'ativo',
-      },
-      {
-        onSuccess: () => {
-          toast.success('Funcionário adicionado com sucesso!');
-          setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
-          setShowForm(false);
-        },
-        onError: (error: any) => {
-          toast.error('Erro ao adicionar funcionário: ' + error.message);
-        },
-      }
-    );
+    const payload = {
+      company_id: adminUser.companyId,
+      name: formData.name,
+      cpf: formData.cpf || undefined,
+      phone: formData.phone || undefined,
+      email: formData.email || undefined,
+      role: formData.role || undefined,
+      salary: formData.salary ? parseFloat(formData.salary) : undefined,
+    };
+
+    if (editingId) {
+      updateFuncionario.mutate(
+        { ...payload, id: editingId },
+        {
+          onSuccess: () => {
+            toast.success('Funcionário atualizado com sucesso!');
+            setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
+            setEditingId(null);
+            setShowForm(false);
+          },
+          onError: (error: any) => {
+            toast.error('Erro ao atualizar funcionário: ' + error.message);
+          },
+        }
+      );
+    } else {
+      createFuncionario.mutate(
+        { ...payload, status: 'ativo' },
+        {
+          onSuccess: () => {
+            toast.success('Funcionário adicionado com sucesso!');
+            setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
+            setShowForm(false);
+          },
+          onError: (error: any) => {
+            toast.error('Erro ao adicionar funcionário: ' + error.message);
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -78,7 +106,9 @@ export default function Funcionarios() {
       {/* Form */}
       {showForm && (
         <div className="rounded-lg border border-border bg-card p-6">
-          <h3 className="text-lg font-semibold mb-4">Novo Funcionário</h3>
+          <h3 className="text-lg font-semibold mb-4">
+            {editingId ? 'Editar Funcionário' : 'Novo Funcionário'}
+          </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="name">Nome *</Label>
@@ -153,13 +183,17 @@ export default function Funcionarios() {
             </div>
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={createFuncionario.isPending}>
-                {createFuncionario.isPending ? 'Salvando...' : 'Salvar Funcionário'}
+              <Button type="submit" disabled={createFuncionario.isPending || updateFuncionario.isPending}>
+                {createFuncionario.isPending || updateFuncionario.isPending ? 'Salvando...' : 'Salvar Funcionário'}
               </Button>
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => setShowForm(false)}
+                onClick={() => {
+                  setShowForm(false);
+                  setEditingId(null);
+                  setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
+                }}
               >
                 Cancelar
               </Button>
@@ -168,23 +202,12 @@ export default function Funcionarios() {
         </div>
       )}
 
-      {/* Buttons */}
+      {/* Button */}
       {!showForm && (
-        <div className="flex gap-2">
-          <Button onClick={() => setShowForm(true)} className="gap-2">
-            <Plus className="h-4 w-4" />
-            Novo Funcionário
-          </Button>
-          <Button
-            onClick={handlePopulateExamples}
-            disabled={isSeeding}
-            variant="outline"
-            className="gap-2"
-          >
-            <Zap className="h-4 w-4" />
-            {isSeeding ? 'Carregando exemplos...' : 'Carregar Exemplos'}
-          </Button>
-        </div>
+        <Button onClick={() => setShowForm(true)} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Novo Funcionário
+        </Button>
       )}
 
       {/* List */}
@@ -226,13 +249,24 @@ export default function Funcionarios() {
                   {func.status}
                 </span>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-destructive hover:text-destructive"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => handleEdit(func)}
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-destructive hover:text-destructive"
+                  onClick={() => handleDelete(func.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           ))}
         </div>

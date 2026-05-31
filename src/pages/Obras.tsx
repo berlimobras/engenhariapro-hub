@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { useAdmin } from '@/contexts/AdminContext';
-import { useObras, useCreateObra } from '@/hooks/useObras';
+import { useObras, useCreateObra, useDeleteObra } from '@/hooks/useObras';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Building2, Zap } from 'lucide-react';
-import { seedDatabase } from '@/lib/seedData';
+import { Plus, Trash2, Building2 } from 'lucide-react';
 
 export default function Obras() {
   const { adminUser } = useAdmin();
-  const { data: obras = [], isLoading, refetch } = useObras(adminUser.companyId);
+  const { data: obras = [], isLoading } = useObras(adminUser.companyId);
   const createObra = useCreateObra();
+  const deleteObra = useDeleteObra();
   const [showForm, setShowForm] = useState(false);
-  const [isSeeding, setIsSeeding] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -22,16 +21,12 @@ export default function Obras() {
     budget_estimated: '',
   });
 
-  const handlePopulateExamples = async () => {
-    setIsSeeding(true);
-    const result = await seedDatabase(adminUser.companyId);
-    setIsSeeding(false);
-
-    if (result.success) {
-      toast.success('Dados de exemplo adicionados com sucesso!');
-      refetch();
-    } else {
-      toast.error('Erro ao adicionar dados de exemplo');
+  const handleDelete = (id: string) => {
+    if (confirm('Tem certeza que deseja excluir esta obra?')) {
+      deleteObra.mutate({ id, company_id: adminUser.companyId }, {
+        onSuccess: () => toast.success('Obra excluída com sucesso!'),
+        onError: (err: any) => toast.error('Erro ao excluir: ' + err.message)
+      });
     }
   };
 
@@ -137,23 +132,12 @@ export default function Obras() {
         </div>
       )}
 
-      {/* Buttons */}
+      {/* Button */}
       {!showForm && (
-        <div className="flex gap-2">
-          <Button onClick={() => setShowForm(true)} className="gap-2">
-            <Plus className="h-4 w-4" />
-            Nova Obra
-          </Button>
-          <Button
-            onClick={handlePopulateExamples}
-            disabled={isSeeding}
-            variant="outline"
-            className="gap-2"
-          >
-            <Zap className="h-4 w-4" />
-            {isSeeding ? 'Carregando exemplos...' : 'Carregar Exemplos'}
-          </Button>
-        </div>
+        <Button onClick={() => setShowForm(true)} className="gap-2">
+          <Plus className="h-4 w-4" />
+          Nova Obra
+        </Button>
       )}
 
       {/* List */}
@@ -201,6 +185,7 @@ export default function Obras() {
                 variant="ghost"
                 size="sm"
                 className="text-destructive hover:text-destructive"
+                onClick={() => handleDelete(obra.id)}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>

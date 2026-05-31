@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "./contexts/AdminContext";
 import { AppLayout } from "./components/AppLayout";
-import { useInitializeCompany } from "./hooks/useInitializeCompany";
 
 // Pages
 import Index from "./pages/Index";
@@ -23,38 +22,30 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-function AppContent() {
-  useInitializeCompany();
-
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Index />} />
-          <Route path="/obras" element={<Obras />} />
-          <Route path="/funcionarios" element={<Funcionarios />} />
-          <Route path="/ferramentas/inteligencia" element={<InteligenciaTecnica />} />
-          <Route path="/ferramentas/marketing" element={<Marketing />} />
-          <Route path="/ferramentas/planilhas" element={<Planilhas />} />
-          <Route path="/ferramentas/prompts" element={<Prompts />} />
-          <Route path="/ferramentas/contratos" element={<Contratos />} />
-          <Route path="/ferramentas/checklists" element={<Checklists />} />
-          <Route path="/atualizacoes" element={<Atualizacoes />} />
-          <Route path="/configuracoes" element={<Configuracoes />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <AdminProvider>
-        <AppContent />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Index />} />
+              <Route path="/obras" element={<Obras />} />
+              <Route path="/funcionarios" element={<Funcionarios />} />
+              <Route path="/ferramentas/inteligencia" element={<InteligenciaTecnica />} />
+              <Route path="/ferramentas/marketing" element={<Marketing />} />
+              <Route path="/ferramentas/planilhas" element={<Planilhas />} />
+              <Route path="/ferramentas/prompts" element={<Prompts />} />
+              <Route path="/ferramentas/contratos" element={<Contratos />} />
+              <Route path="/ferramentas/checklists" element={<Checklists />} />
+              <Route path="/atualizacoes" element={<Atualizacoes />} />
+              <Route path="/configuracoes" element={<Configuracoes />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
       </AdminProvider>
     </TooltipProvider>
   </QueryClientProvider>
