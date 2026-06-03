@@ -1,36 +1,31 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { FileText, Printer } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { FileText, UploadCloud } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function ObraDocumentos({ obra }: { obra: any }) {
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 mb-4">
-        <FileText className="h-5 w-5" />
-        <h3 className="text-lg font-semibold">Documentos & Relatórios Automáticos</h3>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <FileText className="h-5 w-5 text-primary" />
+          <h3 className="text-lg font-semibold">Documentos e Contratos</h3>
+        </div>
+        <Button size="sm" className="rounded-full gap-2" variant="outline">
+          <UploadCloud className="h-4 w-4" />
+          Anexar Arquivo
+        </Button>
       </div>
-      
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardContent className="p-6 space-y-4">
-            <h4 className="font-semibold">Relatório Completo (PDF)</h4>
-            <p className="text-sm text-muted-foreground">Gera um relatório nativo compilando equipe, financeiro e andamento da obra.</p>
-            <Button className="w-full gap-2">
-              <Printer className="h-4 w-4" /> Imprimir / Salvar PDF
-            </Button>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-6 space-y-4">
-            <h4 className="font-semibold">Gerar Contrato Padrão</h4>
-            <p className="text-sm text-muted-foreground">Puxa os dados da obra e cliente e formata um contrato inteligente para assinatura.</p>
-            <Button variant="secondary" className="w-full gap-2">
-              <FileText className="h-4 w-4" /> Visualizar Contrato
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+
+      <Card className="rounded-2xl border-dashed shadow-sm">
+        <CardContent className="py-16 text-center text-muted-foreground">
+          <FileText className="h-12 w-12 mx-auto text-muted-foreground opacity-20 mb-4" />
+          <h4 className="text-foreground font-semibold mb-2">Área de Anexos</h4>
+          <p className="text-sm max-w-md mx-auto">
+            Faça upload de contratos, projetos arquitetônicos, orçamentos e comprovantes para manter tudo organizado em um só lugar.
+          </p>
+          <p className="text-[11px] mt-4 opacity-50">(Em desenvolvimento)</p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

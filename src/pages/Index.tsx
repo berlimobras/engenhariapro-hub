@@ -1,5 +1,6 @@
 import { useAdmin } from '@/contexts/AdminContext';
 import { useMetrics } from '@/hooks/useMetrics';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
@@ -25,6 +26,7 @@ const DESPESA_COLOR = '#ef4444';
 
 export default function Dashboard() {
   const { adminUser } = useAdmin();
+  const navigate = useNavigate();
   const { data: metrics, isLoading } = useMetrics(adminUser.companyId);
 
   if (isLoading) {
@@ -54,7 +56,7 @@ export default function Dashboard() {
       ════════════════════════════════════════════════════════════ */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Obras Ativas */}
-        <Card className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl">
+        <Card onClick={() => navigate('/obras')} className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl cursor-pointer hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
             <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Obras Ativas
@@ -115,7 +117,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Funcionários Ativos */}
-        <Card className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl">
+        <Card onClick={() => navigate('/funcionarios')} className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl cursor-pointer hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
             <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Funcionários Ativos
@@ -243,7 +245,11 @@ export default function Dashboard() {
                       : 0;
 
                   return (
-                    <div key={obra.id} className="space-y-2 pb-4 border-b border-border/40 last:border-0">
+                    <div 
+                      key={obra.id} 
+                      onClick={() => navigate(`/obras/${obra.id}`)}
+                      className="space-y-2 p-3 rounded-xl border border-border/40 hover:border-primary/30 hover:bg-muted/30 cursor-pointer transition-colors"
+                    >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-sm text-foreground truncate">
@@ -302,7 +308,8 @@ export default function Dashboard() {
                 {metrics.topFuncionarios.map((func, idx) => (
                   <div
                     key={func.id}
-                    className="flex items-start justify-between pb-3 border-b border-border/40 last:border-0"
+                    onClick={() => navigate(`/funcionarios/${func.id}`)}
+                    className="flex items-start justify-between p-3 rounded-xl border border-border/40 hover:border-primary/30 hover:bg-muted/30 cursor-pointer transition-colors"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">

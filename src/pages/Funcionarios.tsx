@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '@/contexts/AdminContext';
 import { useFuncionarios, useCreateFuncionario, useUpdateFuncionario, useDeleteFuncionario } from '@/hooks/useFuncionarios';
 import { Button } from '@/components/ui/button';
@@ -7,15 +8,15 @@ import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
 import { Plus, Trash2, Users, Pencil } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function Funcionarios() {
   const { adminUser } = useAdmin();
   const { data: funcionarios = [], isLoading } = useFuncionarios(adminUser.companyId);
   const createFuncionario = useCreateFuncionario();
-  const updateFuncionario = useUpdateFuncionario();
   const deleteFuncionario = useDeleteFuncionario();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     cpf: '',
@@ -23,20 +24,11 @@ export default function Funcionarios() {
     email: '',
     role: '',
     salary: '',
+    payment_type: 'diaria',
   });
 
-  const handleEdit = (func: any) => {
-    setFormData({
-      name: func.name || '',
-      cpf: func.cpf || '',
-      phone: func.phone || '',
-      email: func.email || '',
-      role: func.role || '',
-      salary: func.salary ? String(func.salary) : '',
-    });
-    setEditingId(func.id);
-    setShowForm(true);
-  };
+  // The editing is now handled in the FuncionarioPerfil page
+  // We only use the form here for CREATION
 
   const handleDelete = (id: string) => {
     if (confirm('Tem certeza que deseja excluir este funcionário?')) {
@@ -62,38 +54,22 @@ export default function Funcionarios() {
       email: formData.email || undefined,
       role: formData.role || undefined,
       salary: formData.salary ? parseFloat(formData.salary) : undefined,
+      payment_type: formData.payment_type,
     };
 
-    if (editingId) {
-      updateFuncionario.mutate(
-        { ...payload, id: editingId },
-        {
-          onSuccess: () => {
-            toast.success('Funcionário atualizado com sucesso!');
-            setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
-            setEditingId(null);
-            setShowForm(false);
-          },
-          onError: (error: any) => {
-            toast.error('Erro ao atualizar funcionário: ' + error.message);
-          },
-        }
-      );
-    } else {
-      createFuncionario.mutate(
-        { ...payload, status: 'ativo' },
-        {
-          onSuccess: () => {
-            toast.success('Funcionário adicionado com sucesso!');
-            setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
-            setShowForm(false);
-          },
-          onError: (error: any) => {
-            toast.error('Erro ao adicionar funcionário: ' + error.message);
-          },
-        }
-      );
-    }
+    createFuncionario.mutate(
+      { ...payload, status: 'ativo' },
+      {
+        onSuccess: () => {
+          toast.success('Funcionário adicionado com sucesso!');
+          setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '', payment_type: 'diaria' });
+          setShowForm(false);
+        },
+        onError: (error: any) => {
+          toast.error('Erro ao adicionar funcionário: ' + error.message);
+        },
+      }
+    );
   };
 
   return (
@@ -105,10 +81,8 @@ export default function Funcionarios() {
 
       {/* Form */}
       {showForm && (
-        <div className="rounded-lg border border-border bg-card p-6">
-          <h3 className="text-lg font-semibold mb-4">
-            {editingId ? 'Editar Funcionário' : 'Novo Funcionário'}
-          </h3>
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Novo Funcionário</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="name">Nome *</Label>
@@ -168,13 +142,28 @@ export default function Funcionarios() {
                   className="mt-1.5"
                 />
               </div>
+              <div>
+                <Label>Tipo de Pagamento</Label>
+                <Select
+                  value={formData.payment_type}
+                  onValueChange={(val) => setFormData({ ...formData, payment_type: val })}
+                >
+                  <SelectTrigger className="mt-1.5">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="diaria">Por Diária</SelectItem>
+                    <SelectItem value="fixo">Mensal Fixo</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
               <div>
-                <Label htmlFor="salary">Salário (R$)</Label>
+                <Label htmlFor="salary">Valor Base (R$)</Label>
                 <Input
                   id="salary"
                   type="number"
-                  placeholder="Ex: 3000.00"
+                  placeholder={formData.payment_type === 'diaria' ? "Ex: 150.00" : "Ex: 3000.00"}
                   value={formData.salary}
                   onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
                   className="mt-1.5"
@@ -183,16 +172,15 @@ export default function Funcionarios() {
             </div>
 
             <div className="flex gap-2">
-              <Button type="submit" disabled={createFuncionario.isPending || updateFuncionario.isPending}>
-                {createFuncionario.isPending || updateFuncionario.isPending ? 'Salvando...' : 'Salvar Funcionário'}
+              <Button type="submit" disabled={createFuncionario.isPending}>
+                {createFuncionario.isPending ? 'Salvando...' : 'Adicionar Funcionário'}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => {
                   setShowForm(false);
-                  setEditingId(null);
-                  setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '' });
+                  setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '', payment_type: 'diaria' });
                 }}
               >
                 Cancelar
@@ -226,25 +214,28 @@ export default function Funcionarios() {
           {funcionarios.map((func) => (
             <div
               key={func.id}
-              className="rounded-lg border border-border bg-card p-4 flex items-start justify-between"
+              onClick={() => navigate(`/funcionarios/${func.id}`)}
+              className="rounded-2xl border border-border/50 bg-card p-5 flex items-start justify-between cursor-pointer hover:border-primary/30 hover:shadow-md transition-all group"
             >
               <div className="flex-1">
-                <h3 className="font-semibold text-foreground">{func.name}</h3>
+                <h3 className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">{func.name}</h3>
                 {func.role && (
-                  <p className="text-sm text-muted-foreground">Função: {func.role}</p>
+                  <p className="text-sm text-muted-foreground mt-1 font-medium">{func.role}</p>
                 )}
-                {func.phone && (
-                  <p className="text-sm text-muted-foreground">Tel: {func.phone}</p>
-                )}
-                {func.salary && (
-                  <p className="text-sm text-muted-foreground">
-                    Salário: R$ {func.salary.toLocaleString('pt-BR')}
-                  </p>
-                )}
-                <span className={`inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                <div className="flex gap-4 mt-2">
+                  {func.phone && (
+                    <p className="text-sm text-muted-foreground">Tel: {func.phone}</p>
+                  )}
+                  {func.salary && (
+                    <p className="text-sm text-muted-foreground">
+                      {func.payment_type === 'diaria' ? 'Diária Base' : 'Salário Base'}: R$ {func.salary.toLocaleString('pt-BR')}
+                    </p>
+                  )}
+                </div>
+                <span className={`inline-block mt-3 px-2.5 py-0.5 rounded-full text-[11px] uppercase tracking-wider font-bold ${
                   func.status === 'ativo'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-gray-100 text-gray-700'
+                    ? 'bg-emerald-100 text-emerald-700'
+                    : 'bg-stone-100 text-stone-700'
                 }`}>
                   {func.status}
                 </span>
@@ -252,17 +243,12 @@ export default function Funcionarios() {
               <div className="flex gap-2">
                 <Button
                   variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground"
-                  onClick={() => handleEdit(func)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => handleDelete(func.id)}
+                  size="icon"
+                  className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Evita navegar pra página de perfil
+                    handleDelete(func.id);
+                  }}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

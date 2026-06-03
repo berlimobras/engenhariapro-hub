@@ -1,0 +1,16 @@
+-- DESABILITAR RLS PARA MODO TESTE
+-- Isso permite usar o CRM em modo teste sem autenticação
+
+-- Desabilitar RLS em todas as tabelas
+ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE companies DISABLE ROW LEVEL SECURITY;
+ALTER TABLE company_members DISABLE ROW LEVEL SECURITY;
+ALTER TABLE obras DISABLE ROW LEVEL SECURITY;
+ALTER TABLE funcionarios DISABLE ROW LEVEL SECURITY;
+ALTER TABLE obra_funcionarios DISABLE ROW LEVEL SECURITY;
+ALTER TABLE materiais DISABLE ROW LEVEL SECURITY;
+ALTER TABLE obra_materiais DISABLE ROW LEVEL SECURITY;
+ALTER TABLE transacoes DISABLE ROW LEVEL SECURITY;
+
+-- Confirmação
+SELECT 'RLS desabilitado com sucesso para modo teste!' as status;
