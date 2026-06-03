@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, MessageSquareTerminal } from "lucide-react";
+import { Copy, Check, Terminal } from "lucide-react";
 import { promptsData, PromptItem } from "@/data/promptsData";
 
 export default function Prompts() {
@@ -35,7 +35,7 @@ export default function Prompts() {
             <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
             
             <div className="w-12 h-12 rounded-2xl bg-stone-100 flex items-center justify-center mb-4 border border-border/50 group-hover:bg-primary group-hover:border-primary transition-colors duration-300 shadow-sm shrink-0">
-              <MessageSquareTerminal className="w-5 h-5 text-stone-600 group-hover:text-white transition-colors" />
+              <Terminal className="w-5 h-5 text-stone-600 group-hover:text-white transition-colors" />
             </div>
 
             <div className="mb-auto">
@@ -62,7 +62,7 @@ export default function Prompts() {
                 <DialogHeader>
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shrink-0">
-                      <MessageSquareTerminal className="w-5 h-5" />
+                      <Terminal className="w-5 h-5" />
                     </div>
                     <div>
                       <span className="text-[10px] font-black uppercase tracking-widest text-primary block">Prompt #{selectedPrompt.id}</span>
