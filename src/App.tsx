@@ -7,10 +7,12 @@ import { AdminProvider } from "./contexts/AdminContext";
 import { AppLayout } from "./components/AppLayout";
 
 import { AuthGuard } from "./components/AuthGuard";
+import { MasterAdminGuard } from "./components/MasterAdminGuard";
 
 // Pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import MasterDashboard from "./pages/admin/MasterDashboard";
 import Index from "./pages/Index";
 import Obras from "./pages/Obras";
 import ObraDashboard from "./pages/ObraDashboard";
@@ -41,7 +43,10 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Rotas Protegidas */}
+            {/* Rotas Master Admin (Exclusivas do dono do SaaS) */}
+            <Route path="/admin/dashboard" element={<MasterAdminGuard><MasterDashboard /></MasterAdminGuard>} />
+
+            {/* Rotas Protegidas (Para clientes construtoras) */}
             <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
               <Route path="/" element={<Index />} />
               <Route path="/obras" element={<Obras />} />
