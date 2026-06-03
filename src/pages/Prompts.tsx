@@ -21,7 +21,7 @@ export default function Prompts() {
     <div className="animate-fade-in space-y-8 pb-10">
       <PageHeader
         title="Biblioteca de Prompts"
-        description="Acesse 102 prompts engenharia avançada. Clique em um card para copiar e colar na sua IA favorita."
+        description="Acesse mais de 200 prompts de engenharia avançada. Clique em um card para copiar e colar na sua IA favorita."
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
