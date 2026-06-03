@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAdmin } from '@/contexts/AdminContext';
 import { useObras, useCreateObra, useDeleteObra } from '@/hooks/useObras';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Building2 } from 'lucide-react';
+import { Plus, Trash2, Building2, ArrowRight } from 'lucide-react';
 
 export default function Obras() {
   const { adminUser } = useAdmin();
@@ -144,10 +145,10 @@ export default function Obras() {
       {isLoading ? (
         <div className="text-center py-12">Carregando obras...</div>
       ) : obras.length === 0 ? (
-        <div className="rounded-lg border border-border bg-card/50 p-12 text-center">
-          <Building2 className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-50" />
-          <p className="text-muted-foreground">Nenhuma obra cadastrada</p>
-          <p className="text-sm text-muted-foreground mt-2">
+        <div className="rounded-2xl border border-border/50 bg-card/30 p-12 text-center shadow-sm">
+          <Building2 className="h-12 w-12 mx-auto text-muted-foreground mb-4 opacity-30" />
+          <p className="text-muted-foreground font-medium">Nenhuma obra cadastrada</p>
+          <p className="text-sm text-muted-foreground mt-1">
             Clique em "Nova Obra" para começar
           </p>
         </div>
@@ -156,39 +157,46 @@ export default function Obras() {
           {obras.map((obra) => (
             <div
               key={obra.id}
-              className="rounded-lg border border-border bg-card p-4 flex items-start justify-between"
+              className="rounded-2xl border-0 shadow-sm bg-card p-5 flex items-start justify-between hover-lift transition-all"
             >
               <div className="flex-1">
-                <h3 className="font-semibold text-foreground">{obra.name}</h3>
+                <h3 className="text-lg font-bold text-foreground mb-1">{obra.name}</h3>
                 {obra.address && (
-                  <p className="text-sm text-muted-foreground">{obra.address}</p>
+                  <p className="text-sm text-muted-foreground mb-1">{obra.address}</p>
                 )}
                 {obra.client_name && (
-                  <p className="text-sm text-muted-foreground">Cliente: {obra.client_name}</p>
+                  <p className="text-sm text-muted-foreground mb-1">Cliente: <span className="font-medium text-foreground/80">{obra.client_name}</span></p>
                 )}
                 {obra.budget_estimated && (
-                  <p className="text-sm text-muted-foreground">
-                    Orçamento: R$ {obra.budget_estimated.toLocaleString('pt-BR')}
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Orçamento: <span className="font-semibold text-foreground">R$ {obra.budget_estimated.toLocaleString('pt-BR')}</span>
                   </p>
                 )}
-                <span className={`inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                <span className={`inline-flex px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
                   obra.status === 'em_andamento'
-                    ? 'bg-green-100 text-green-700'
+                    ? 'bg-emerald-100/80 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400'
                     : obra.status === 'planejamento'
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'bg-gray-100 text-gray-700'
+                    ? 'bg-blue-100/80 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400'
+                    : 'bg-gray-100/80 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400'
                 }`}>
                   {obra.status.replace(/_/g, ' ')}
                 </span>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-destructive hover:text-destructive"
-                onClick={() => handleDelete(obra.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <Link to={`/obras/${obra.id}`}>
+                    Gerenciar <ArrowRight className="h-4 w-4 ml-1" />
+                  </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-destructive hover:text-destructive"
+                  onClick={() => handleDelete(obra.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           ))}
         </div>

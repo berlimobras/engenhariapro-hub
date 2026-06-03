@@ -34,26 +34,82 @@ const sistemaNav = [
   { title: "Configurações", url: "/configuracoes", icon: Settings },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ isMobile }: { isMobile?: boolean }) {
+  if (isMobile) {
+    return (
+      <aside className="flex flex-col h-full bg-sidebar">
+        {/* Logo / Brand */}
+        <div className="flex h-20 items-center gap-3 px-6 shrink-0 mt-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary shadow-sm text-white">
+            <HardHat className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-base font-bold text-sidebar-foreground leading-tight truncate">EngenhariaPro</p>
+            <p className="text-[11px] text-sidebar-foreground/50 font-medium">Hub de Ferramentas</p>
+          </div>
+        </div>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1 scrollbar-hide">
+          <p className="px-4 mb-2 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40 mt-2">Gestão</p>
+          {gestaoNav.map((item) => (
+            <NavLink key={item.url} to={item.url} end={item.url === "/"} className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-sidebar-accent/5 hover:text-sidebar-foreground" activeClassName="bg-primary text-white font-semibold shadow-md shadow-primary/25">
+              <item.icon className="h-4 w-4 opacity-80" />
+              <span className="truncate">{item.title}</span>
+            </NavLink>
+          ))}
+
+          <div className="my-4 border-t border-sidebar-border" />
+          <p className="px-4 mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40">Ferramentas</p>
+          {ferramentasNav.map((item) => (
+            <NavLink key={item.url} to={item.url} className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-sidebar-accent/5 hover:text-sidebar-foreground" activeClassName="bg-primary text-white font-semibold shadow-md shadow-primary/25">
+              <item.icon className="h-4 w-4 opacity-80" />
+              <span className="truncate">{item.title}</span>
+            </NavLink>
+          ))}
+
+          <div className="my-4 border-t border-sidebar-border" />
+          <p className="px-4 mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40">Sistema</p>
+          {sistemaNav.map((item) => (
+            <NavLink key={item.url} to={item.url} className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-sidebar-accent/5 hover:text-sidebar-foreground" activeClassName="bg-primary text-white font-semibold shadow-md shadow-primary/25">
+              <item.icon className="h-4 w-4 opacity-80" />
+              <span className="truncate">{item.title}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* User info */}
+        <div className="px-4 pb-6 pt-2 shrink-0 bg-sidebar">
+          <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/5 p-3 hover:bg-sidebar-accent/10 transition-colors border border-border/50">
+            <div className="h-9 w-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">A</div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-sidebar-foreground truncate">Admin Local</p>
+              <p className="text-[11px] text-sidebar-foreground/50 truncate">admin@obradomestre</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
   return (
-    <aside className="hidden lg:flex lg:w-64 lg:flex-col h-screen sticky top-0 bg-sidebar border-r border-sidebar-border">
+    <aside className="hidden lg:flex lg:w-64 lg:flex-col h-[calc(100vh-2rem)] m-4 rounded-[2rem] bg-sidebar shadow-md border-0 sticky top-4 overflow-hidden shrink-0 z-40">
 
       {/* Logo / Brand */}
-      <div className="flex h-16 items-center gap-3 px-5 border-b border-sidebar-border shrink-0">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-accent shadow-sm">
-          <HardHat className="h-5 w-5 text-white" />
+      <div className="flex h-20 items-center gap-3 px-6 shrink-0 mt-2">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary shadow-sm text-white">
+          <HardHat className="h-5 w-5" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-white leading-none truncate">EngenhariaPro</p>
-          <p className="text-[10px] text-sidebar-foreground/60 mt-0.5 font-medium">Hub de Ferramentas</p>
+          <p className="text-base font-bold text-sidebar-foreground leading-tight truncate">EngenhariaPro</p>
+          <p className="text-[11px] text-sidebar-foreground/50 font-medium">Hub de Ferramentas</p>
         </div>
         <ThemeToggle />
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-5 space-y-0.5">
+      <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-1 scrollbar-hide">
         {/* GESTÃO */}
-        <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
+        <p className="px-4 mb-2 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40 mt-2">
           Gestão
         </p>
 
@@ -62,12 +118,10 @@ export function AppSidebar() {
             key={item.url}
             to={item.url}
             end={item.url === "/"}
-            className="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-sidebar-foreground/75 font-medium transition-all duration-150 hover:bg-sidebar-accent hover:text-white"
-            activeClassName="bg-accent/15 text-white font-semibold border border-accent/20"
+            className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-sidebar-accent/5 hover:text-sidebar-foreground"
+            activeClassName="bg-primary text-white font-semibold shadow-md shadow-primary/25"
           >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sidebar-foreground/10 group-hover:bg-white/10 transition-colors">
-              <item.icon className="h-3.5 w-3.5" />
-            </div>
+            <item.icon className="h-4 w-4 opacity-80" />
             <span className="truncate">{item.title}</span>
           </NavLink>
         ))}
@@ -75,7 +129,7 @@ export function AppSidebar() {
         <div className="my-4 border-t border-sidebar-border" />
 
         {/* FERRAMENTAS */}
-        <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
+        <p className="px-4 mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
           Ferramentas
         </p>
 
@@ -83,12 +137,10 @@ export function AppSidebar() {
           <NavLink
             key={item.url}
             to={item.url}
-            className="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-sidebar-foreground/75 font-medium transition-all duration-150 hover:bg-sidebar-accent hover:text-white"
-            activeClassName="bg-accent/15 text-white font-semibold border border-accent/20"
+            className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-sidebar-accent/5 hover:text-sidebar-foreground"
+            activeClassName="bg-primary text-white font-semibold shadow-md shadow-primary/25"
           >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sidebar-foreground/10 group-hover:bg-white/10 transition-colors">
-              <item.icon className="h-3.5 w-3.5" />
-            </div>
+            <item.icon className="h-4 w-4 opacity-80" />
             <span className="truncate">{item.title}</span>
           </NavLink>
         ))}
@@ -96,7 +148,7 @@ export function AppSidebar() {
         <div className="my-4 border-t border-sidebar-border" />
 
         {/* SISTEMA */}
-        <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
+        <p className="px-4 mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40">
           Sistema
         </p>
 
@@ -104,23 +156,25 @@ export function AppSidebar() {
           <NavLink
             key={item.url}
             to={item.url}
-            className="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-sidebar-foreground/75 font-medium transition-all duration-150 hover:bg-sidebar-accent hover:text-white"
-            activeClassName="bg-accent/15 text-white font-semibold border border-accent/20"
+            className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-sidebar-accent/5 hover:text-sidebar-foreground"
+            activeClassName="bg-primary text-white font-semibold shadow-md shadow-primary/25"
           >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-sidebar-foreground/10 group-hover:bg-white/10 transition-colors">
-              <item.icon className="h-3.5 w-3.5" />
-            </div>
+            <item.icon className="h-4 w-4 opacity-80" />
             <span className="truncate">{item.title}</span>
           </NavLink>
         ))}
       </nav>
 
       {/* User info */}
-      <div className="px-4 pb-5 shrink-0">
-        <div className="rounded-xl bg-sidebar-accent/30 p-3 border border-sidebar-border">
-          <p className="text-[10px] text-sidebar-foreground/60 font-medium mb-1">LOGADO COMO</p>
-          <p className="text-xs font-semibold text-white">Admin Local</p>
-          <p className="text-[10px] text-sidebar-foreground/60">admin@obradomestre.local</p>
+      <div className="px-4 pb-6 pt-2 shrink-0 bg-sidebar">
+        <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/5 p-3 hover:bg-sidebar-accent/10 transition-colors cursor-pointer border border-border/50">
+          <div className="h-9 w-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+            A
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-sidebar-foreground truncate">Admin Local</p>
+            <p className="text-[11px] text-sidebar-foreground/50 truncate">admin@obradomestre</p>
+          </div>
         </div>
       </div>
     </aside>

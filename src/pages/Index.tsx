@@ -54,14 +54,16 @@ export default function Dashboard() {
       ════════════════════════════════════════════════════════════ */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Obras Ativas */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
+            <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Obras Ativas
             </CardTitle>
-            <Building2 className="h-4 w-4 text-blue-600" />
+            <div className="h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center">
+              <Building2 className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pb-5">
             <div className="text-2xl font-bold text-foreground">{obrasAtivas}</div>
             <div className="flex items-center gap-1 mt-2">
               <span className="inline-block h-2 w-2 rounded-full bg-blue-600" />
@@ -71,14 +73,16 @@ export default function Dashboard() {
         </Card>
 
         {/* Receita Total */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
+            <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Receita Total
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-emerald-600" />
+            <div className="h-8 w-8 rounded-full bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center">
+              <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pb-5">
             <div className="text-2xl font-bold text-foreground">
               R$ {(metrics.receitaTotal / 1000).toFixed(1)}K
             </div>
@@ -90,14 +94,16 @@ export default function Dashboard() {
         </Card>
 
         {/* Despesas Total */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
+            <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Despesas Total
             </CardTitle>
-            <TrendingDown className="h-4 w-4 text-rose-600" />
+            <div className="h-8 w-8 rounded-full bg-rose-100 dark:bg-rose-900/40 flex items-center justify-center">
+              <TrendingDown className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pb-5">
             <div className="text-2xl font-bold text-foreground">
               R$ {(metrics.despesaTotal / 1000).toFixed(1)}K
             </div>
@@ -109,14 +115,16 @@ export default function Dashboard() {
         </Card>
 
         {/* Funcionários Ativos */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm hover:bg-card/70 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+        <Card className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
+            <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Funcionários Ativos
             </CardTitle>
-            <Users className="h-4 w-4 text-accent" />
+            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <Users className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pb-5">
             <div className="text-2xl font-bold text-foreground">
               {metrics.funcionariosAtivos}
             </div>
@@ -133,9 +141,9 @@ export default function Dashboard() {
       ════════════════════════════════════════════════════════════ */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         {/* Bar Chart: Receita vs Despesa por Obra */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base">Receita vs Despesa por Obra</CardTitle>
+            <CardTitle className="text-base font-bold">Receita vs Despesa por Obra</CardTitle>
           </CardHeader>
           <CardContent>
             {metrics.receitaDespesaPorObra.length > 0 ? (
@@ -173,9 +181,9 @@ export default function Dashboard() {
         </Card>
 
         {/* Pie Chart: Obras por Status */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base">Distribuição de Obras por Status</CardTitle>
+            <CardTitle className="text-base font-bold">Distribuição de Obras por Status</CardTitle>
           </CardHeader>
           <CardContent>
             {metrics.obrasPorStatus.length > 0 ? (
@@ -218,9 +226,9 @@ export default function Dashboard() {
       ════════════════════════════════════════════════════════════ */}
       <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
         {/* Obras Recentes */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base">Obras Recentes</CardTitle>
+            <CardTitle className="text-base font-bold">Obras Recentes</CardTitle>
           </CardHeader>
           <CardContent>
             {metrics.obrasRecentes.length > 0 ? (
@@ -249,12 +257,12 @@ export default function Dashboard() {
                         </div>
                         <Badge
                           variant="secondary"
-                          className={`ml-2 shrink-0 ${
+                          className={`ml-2 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider border-0 ${
                             obra.status === 'em_andamento'
-                              ? 'bg-green-100 text-green-700'
+                              ? 'bg-emerald-100/80 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400'
                               : obra.status === 'planejamento'
-                              ? 'bg-blue-100 text-blue-700'
-                              : 'bg-gray-100 text-gray-700'
+                              ? 'bg-blue-100/80 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400'
+                              : 'bg-gray-100/80 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400'
                           }`}
                         >
                           {obra.status.replace(/_/g, ' ')}
@@ -284,9 +292,9 @@ export default function Dashboard() {
         </Card>
 
         {/* Top Funcionários por Salário */}
-        <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card rounded-2xl">
           <CardHeader>
-            <CardTitle className="text-base">Top Funcionários por Salário</CardTitle>
+            <CardTitle className="text-base font-bold">Top Funcionários por Salário</CardTitle>
           </CardHeader>
           <CardContent>
             {metrics.topFuncionarios.length > 0 ? (
