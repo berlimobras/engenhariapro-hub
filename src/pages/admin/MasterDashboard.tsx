@@ -45,22 +45,15 @@ export default function MasterDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-100 p-8">
+    <div className="space-y-8 pb-6">
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Header */}
-        <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-stone-200">
+        <div className="flex justify-between items-center bg-card p-6 rounded-2xl shadow-sm border border-border">
           <div>
-            <h1 className="text-3xl font-black uppercase text-stone-900 tracking-tight">Portal Master</h1>
-            <p className="text-stone-500 font-medium mt-1">Gerenciamento global de Construtoras (SaaS)</p>
+            <h1 className="text-2xl lg:text-3xl font-black uppercase text-foreground tracking-tight">Portal Master</h1>
+            <p className="text-muted-foreground font-medium mt-1">Gerenciamento global de Construtoras (SaaS)</p>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="flex items-center gap-2 text-stone-500 hover:text-red-600 transition-colors font-semibold bg-stone-50 px-4 py-2 rounded-lg border border-stone-200"
-          >
-            <LogOut className="w-4 h-4" />
-            Sair
-          </button>
         </div>
 
         {/* Metrics Grid */}

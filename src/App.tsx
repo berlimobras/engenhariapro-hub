@@ -43,11 +43,13 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Rotas Master Admin (Exclusivas do dono do SaaS) */}
-            <Route path="/admin/dashboard" element={<MasterAdminGuard><MasterDashboard /></MasterAdminGuard>} />
+            {/* Rotas Master Admin foram movidas para dentro do AppLayout */}
 
             {/* Rotas Protegidas (Para clientes construtoras) */}
             <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
+              {/* Rota Master Admin (Exclusiva) */}
+              <Route path="/admin/dashboard" element={<MasterAdminGuard><MasterDashboard /></MasterAdminGuard>} />
+              
               <Route path="/" element={<Index />} />
               <Route path="/obras" element={<Obras />} />
               <Route path="/obras/:id" element={<ObraDashboard />} />

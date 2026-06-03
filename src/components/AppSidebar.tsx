@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { ThemeToggle } from "./ThemeToggle";
+import { useAdmin } from "@/contexts/AdminContext";
 
 const gestaoNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -35,6 +36,9 @@ const sistemaNav = [
 ];
 
 export function AppSidebar({ isMobile }: { isMobile?: boolean }) {
+  const { adminUser } = useAdmin();
+  const isMaster = adminUser?.email?.toLowerCase() === 'berlimobras@gmail.com';
+
   if (isMobile) {
     return (
       <aside className="flex flex-col h-full bg-sidebar">
@@ -78,13 +82,26 @@ export function AppSidebar({ isMobile }: { isMobile?: boolean }) {
           ))}
         </nav>
 
+        {isMaster && (
+          <>
+            <div className="my-4 border-t border-sidebar-border" />
+            <p className="px-4 mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40 text-orange-600">Master Admin</p>
+            <NavLink to="/admin/dashboard" className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-orange-600/10 hover:text-orange-600" activeClassName="bg-orange-600 text-white font-semibold shadow-md shadow-orange-600/25">
+              <Building2 className="h-4 w-4 opacity-80" />
+              <span className="truncate">Portal Master (SaaS)</span>
+            </NavLink>
+          </>
+        )}
+
         {/* User info */}
         <div className="px-4 pb-6 pt-2 shrink-0 bg-sidebar">
           <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/5 p-3 hover:bg-sidebar-accent/10 transition-colors border border-border/50">
-            <div className="h-9 w-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">A</div>
+            <div className="h-9 w-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+              {adminUser?.name?.charAt(0).toUpperCase() || 'U'}
+            </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-sidebar-foreground truncate">Admin Local</p>
-              <p className="text-[11px] text-sidebar-foreground/50 truncate">admin@obradomestre</p>
+              <p className="text-sm font-semibold text-sidebar-foreground truncate">{adminUser?.name || 'Usuário'}</p>
+              <p className="text-[11px] text-sidebar-foreground/50 truncate">{adminUser?.companyName || adminUser?.email}</p>
             </div>
           </div>
         </div>
@@ -163,17 +180,27 @@ export function AppSidebar({ isMobile }: { isMobile?: boolean }) {
             <span className="truncate">{item.title}</span>
           </NavLink>
         ))}
+        {isMaster && (
+          <>
+            <div className="my-4 border-t border-sidebar-border" />
+            <p className="px-4 mb-2 mt-4 text-[11px] font-bold uppercase tracking-widest text-sidebar-foreground/40 text-orange-600">Master Admin</p>
+            <NavLink to="/admin/dashboard" className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm text-sidebar-foreground/80 font-medium transition-all duration-200 hover:bg-orange-600/10 hover:text-orange-600" activeClassName="bg-orange-600 text-white font-semibold shadow-md shadow-orange-600/25">
+              <Building2 className="h-4 w-4 opacity-80" />
+              <span className="truncate">Portal Master (SaaS)</span>
+            </NavLink>
+          </>
+        )}
       </nav>
 
       {/* User info */}
       <div className="px-4 pb-6 pt-2 shrink-0 bg-sidebar">
         <div className="flex items-center gap-3 rounded-2xl bg-sidebar-accent/5 p-3 hover:bg-sidebar-accent/10 transition-colors cursor-pointer border border-border/50">
           <div className="h-9 w-9 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-            A
+            {adminUser?.name?.charAt(0).toUpperCase() || 'U'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-sidebar-foreground truncate">Admin Local</p>
-            <p className="text-[11px] text-sidebar-foreground/50 truncate">admin@obradomestre</p>
+            <p className="text-sm font-semibold text-sidebar-foreground truncate">{adminUser?.name || 'Usuário'}</p>
+            <p className="text-[11px] text-sidebar-foreground/50 truncate">{adminUser?.companyName || adminUser?.email}</p>
           </div>
         </div>
       </div>
