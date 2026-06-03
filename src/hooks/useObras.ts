@@ -7,6 +7,7 @@ export interface Obra {
   company_id: string;
   name: string;
   address?: string;
+  image_url?: string;
   status: 'planejamento' | 'em_andamento' | 'pausada' | 'concluida' | 'cancelada';
   start_date?: string;
   end_date?: string;
@@ -24,6 +25,7 @@ export interface Obra {
 export interface CreateObraInput {
   name: string;
   address?: string;
+  image_url?: string;
   status?: string;
   start_date?: string;
   end_date?: string;

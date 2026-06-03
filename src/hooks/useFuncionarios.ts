@@ -8,9 +8,11 @@ export interface Funcionario {
   cpf?: string;
   phone?: string;
   email?: string;
+  photo_url?: string;
   role?: string;
   salary?: number;
   hire_date?: string;
+  payment_type?: string;
   status: 'ativo' | 'inativo' | 'ferias';
   created_at: string;
   updated_at: string;
@@ -21,9 +23,11 @@ export interface CreateFuncionarioInput {
   cpf?: string;
   phone?: string;
   email?: string;
+  photo_url?: string;
   role?: string;
   salary?: number;
   hire_date?: string;
+  payment_type?: string;
   status?: string;
 }
 

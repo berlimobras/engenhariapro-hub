@@ -1,6 +1,7 @@
 import {
   LayoutDashboard,
   Brain,
+  BrainCircuit,
   Megaphone,
   Table2,
   BookOpen,
@@ -18,12 +19,12 @@ import { useAdmin } from "@/contexts/AdminContext";
 
 const gestaoNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Agentes de IA", url: "/ferramentas/inteligencia", icon: BrainCircuit },
   { title: "Obras", url: "/obras", icon: Building2 },
   { title: "Funcionários", url: "/funcionarios", icon: Users },
 ];
 
 const ferramentasNav = [
-  { title: "Inteligência Técnica", url: "/ferramentas/inteligencia", icon: Brain },
   { title: "Marketing", url: "/ferramentas/marketing", icon: Megaphone },
   { title: "Planilhas & Orçamentos", url: "/ferramentas/planilhas", icon: Table2 },
   { title: "Biblioteca de Prompts", url: "/ferramentas/prompts", icon: BookOpen },

@@ -7,19 +7,22 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Building2, ArrowRight } from 'lucide-react';
+import { Plus, Trash2, Building2, ImageIcon, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Obras() {
   const { adminUser } = useAdmin();
   const { data: obras = [], isLoading } = useObras(adminUser.companyId);
   const createObra = useCreateObra();
   const deleteObra = useDeleteObra();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     address: '',
     client_name: '',
     budget_estimated: '',
+    image_url: '',
   });
 
   const handleDelete = (id: string) => {
@@ -45,12 +48,13 @@ export default function Obras() {
         address: formData.address || undefined,
         client_name: formData.client_name || undefined,
         budget_estimated: formData.budget_estimated ? parseFloat(formData.budget_estimated) : undefined,
+        image_url: formData.image_url || undefined,
         status: 'planejamento',
       },
       {
         onSuccess: () => {
           toast.success('Obra criada com sucesso!');
-          setFormData({ name: '', address: '', client_name: '', budget_estimated: '' });
+          setFormData({ name: '', address: '', client_name: '', budget_estimated: '', image_url: '' });
           setShowForm(false);
         },
         onError: (error: any) => {
@@ -79,6 +83,17 @@ export default function Obras() {
                 placeholder="Ex: Condomínio Residencial A"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="mt-1.5"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="image_url">Link da Foto Principal</Label>
+              <Input
+                id="image_url"
+                placeholder="Ex: https://site.com/foto-da-obra.jpg"
+                value={formData.image_url}
+                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
                 className="mt-1.5"
               />
             </div>
@@ -153,49 +168,63 @@ export default function Obras() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {obras.map((obra) => (
             <div
               key={obra.id}
-              className="rounded-2xl border-0 shadow-sm bg-card p-5 flex items-start justify-between hover-lift transition-all"
+              onClick={() => navigate(`/obras/${obra.id}`)}
+              className="group relative flex flex-col rounded-3xl border border-border/50 bg-card overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 aspect-[4/5]"
             >
-              <div className="flex-1">
-                <h3 className="text-lg font-bold text-foreground mb-1">{obra.name}</h3>
-                {obra.address && (
-                  <p className="text-sm text-muted-foreground mb-1">{obra.address}</p>
+              {/* Image Header */}
+              <div className="h-2/5 w-full bg-stone-100 relative overflow-hidden">
+                {obra.image_url ? (
+                  <img src={obra.image_url} alt={obra.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 group-hover:bg-stone-200 transition-colors duration-500">
+                    <ImageIcon className="w-8 h-8 mb-2 opacity-50" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-50">Sem Imagem</span>
+                  </div>
                 )}
-                {obra.client_name && (
-                  <p className="text-sm text-muted-foreground mb-1">Cliente: <span className="font-medium text-foreground/80">{obra.client_name}</span></p>
-                )}
-                {obra.budget_estimated && (
-                  <p className="text-sm text-muted-foreground mb-3">
-                    Orçamento: <span className="font-semibold text-foreground">R$ {obra.budget_estimated.toLocaleString('pt-BR')}</span>
-                  </p>
-                )}
-                <span className={`inline-flex px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
-                  obra.status === 'em_andamento'
-                    ? 'bg-emerald-100/80 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400'
-                    : obra.status === 'planejamento'
-                    ? 'bg-blue-100/80 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400'
-                    : 'bg-gray-100/80 text-gray-700 dark:bg-gray-500/20 dark:text-gray-400'
-                }`}>
-                  {obra.status.replace(/_/g, ' ')}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" asChild>
-                  <Link to={`/obras/${obra.id}`}>
-                    Gerenciar <ArrowRight className="h-4 w-4 ml-1" />
-                  </Link>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-destructive hover:text-destructive"
-                  onClick={() => handleDelete(obra.id)}
+                {/* Delete button absolutely positioned */}
+                <button
+                  className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-red-50 text-stone-400 hover:text-red-500 rounded-full shadow-sm backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100 z-10"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(obra.id);
+                  }}
                 >
                   <Trash2 className="h-4 w-4" />
-                </Button>
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col flex-1 p-5">
+                <div className="mb-auto">
+                  <h3 className="text-xl font-black text-foreground tracking-tight leading-tight mb-2 group-hover:text-primary transition-colors line-clamp-2">{obra.name}</h3>
+                  {obra.address && (
+                    <p className="text-sm text-muted-foreground flex items-center gap-1.5 line-clamp-1 mb-2 font-medium">
+                      <MapPin className="w-3.5 h-3.5" />
+                      {obra.address}
+                    </p>
+                  )}
+                </div>
+                
+                <div className="mt-4 pt-4 border-t border-border/50">
+                  {obra.budget_estimated && (
+                    <p className="text-xs text-muted-foreground mb-3 font-semibold tracking-wide uppercase">
+                      Orçamento: <span className="font-bold text-foreground block mt-0.5 text-base normal-case tracking-normal">R$ {obra.budget_estimated.toLocaleString('pt-BR')}</span>
+                    </p>
+                  )}
+                  <span className={`inline-flex px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${
+                    obra.status === 'em_andamento'
+                      ? 'bg-emerald-100/80 text-emerald-700'
+                      : obra.status === 'planejamento'
+                      ? 'bg-blue-100/80 text-blue-700'
+                      : 'bg-stone-100/80 text-stone-700'
+                  }`}>
+                    {obra.status.replace(/_/g, ' ')}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

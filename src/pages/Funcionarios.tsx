@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Users, Pencil } from 'lucide-react';
+import { Plus, Trash2, Users, Pencil, Briefcase } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function Funcionarios() {
@@ -22,10 +22,21 @@ export default function Funcionarios() {
     cpf: '',
     phone: '',
     email: '',
+    photo_url: '',
     role: '',
     salary: '',
     payment_type: 'diaria',
   });
+
+  // Agrupando funcionários por função
+  const groupedFuncionarios = funcionarios.reduce((acc, func) => {
+    const role = func.role?.trim() || 'Outros';
+    if (!acc[role]) acc[role] = [];
+    acc[role].push(func);
+    return acc;
+  }, {} as Record<string, typeof funcionarios>);
+  
+  const sortedRoles = Object.keys(groupedFuncionarios).sort();
 
   // The editing is now handled in the FuncionarioPerfil page
   // We only use the form here for CREATION
@@ -52,6 +63,7 @@ export default function Funcionarios() {
       cpf: formData.cpf || undefined,
       phone: formData.phone || undefined,
       email: formData.email || undefined,
+      photo_url: formData.photo_url || undefined,
       role: formData.role || undefined,
       salary: formData.salary ? parseFloat(formData.salary) : undefined,
       payment_type: formData.payment_type,
@@ -62,7 +74,7 @@ export default function Funcionarios() {
       {
         onSuccess: () => {
           toast.success('Funcionário adicionado com sucesso!');
-          setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '', payment_type: 'diaria' });
+          setFormData({ name: '', cpf: '', phone: '', email: '', photo_url: '', role: '', salary: '', payment_type: 'diaria' });
           setShowForm(false);
         },
         onError: (error: any) => {
@@ -119,16 +131,28 @@ export default function Funcionarios() {
               </div>
             </div>
 
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="joao@example.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="mt-1.5"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="joao@example.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="mt-1.5"
+                />
+              </div>
+              <div>
+                <Label htmlFor="photo_url">Link da Foto (Opcional)</Label>
+                <Input
+                  id="photo_url"
+                  placeholder="https://..."
+                  value={formData.photo_url}
+                  onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
+                  className="mt-1.5"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -180,7 +204,7 @@ export default function Funcionarios() {
                 variant="outline"
                 onClick={() => {
                   setShowForm(false);
-                  setFormData({ name: '', cpf: '', phone: '', email: '', role: '', salary: '', payment_type: 'diaria' });
+                  setFormData({ name: '', cpf: '', phone: '', email: '', photo_url: '', role: '', salary: '', payment_type: 'diaria' });
                 }}
               >
                 Cancelar
@@ -210,48 +234,54 @@ export default function Funcionarios() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-4">
-          {funcionarios.map((func) => (
-            <div
-              key={func.id}
-              onClick={() => navigate(`/funcionarios/${func.id}`)}
-              className="rounded-2xl border border-border/50 bg-card p-5 flex items-start justify-between cursor-pointer hover:border-primary/30 hover:shadow-md transition-all group"
-            >
-              <div className="flex-1">
-                <h3 className="font-semibold text-foreground text-lg group-hover:text-primary transition-colors">{func.name}</h3>
-                {func.role && (
-                  <p className="text-sm text-muted-foreground mt-1 font-medium">{func.role}</p>
-                )}
-                <div className="flex gap-4 mt-2">
-                  {func.phone && (
-                    <p className="text-sm text-muted-foreground">Tel: {func.phone}</p>
-                  )}
-                  {func.salary && (
-                    <p className="text-sm text-muted-foreground">
-                      {func.payment_type === 'diaria' ? 'Diária Base' : 'Salário Base'}: R$ {func.salary.toLocaleString('pt-BR')}
-                    </p>
-                  )}
-                </div>
-                <span className={`inline-block mt-3 px-2.5 py-0.5 rounded-full text-[11px] uppercase tracking-wider font-bold ${
-                  func.status === 'ativo'
-                    ? 'bg-emerald-100 text-emerald-700'
-                    : 'bg-stone-100 text-stone-700'
-                }`}>
-                  {func.status}
-                </span>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Evita navegar pra página de perfil
-                    handleDelete(func.id);
-                  }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+        <div className="space-y-10">
+          {sortedRoles.map(role => (
+            <div key={role} className="space-y-4">
+              <h3 className="text-xl font-black text-foreground flex items-center gap-2 border-b border-border/50 pb-2">
+                <Briefcase className="w-5 h-5 text-primary" />
+                {role}
+                <span className="text-sm font-medium text-muted-foreground ml-2 bg-stone-100 px-2 py-0.5 rounded-full">{groupedFuncionarios[role].length}</span>
+              </h3>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                {groupedFuncionarios[role].map((func) => (
+                  <div
+                    key={func.id}
+                    onClick={() => navigate(`/funcionarios/${func.id}`)}
+                    className="group relative flex flex-col items-center text-center rounded-3xl border border-border/50 bg-card p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 aspect-square"
+                  >
+                    <div className="w-20 h-20 rounded-full bg-stone-100 flex items-center justify-center mb-4 overflow-hidden ring-4 ring-white shadow-sm">
+                      {func.photo_url ? (
+                        <img src={func.photo_url} alt={func.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-2xl font-black text-stone-400">{func.name.charAt(0).toUpperCase()}</span>
+                      )}
+                    </div>
+                    
+                    <h3 className="font-bold text-foreground text-sm group-hover:text-primary transition-colors line-clamp-1">{func.name}</h3>
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-1">{func.phone || 'Sem telefone'}</p>
+                    
+                    <div className="mt-auto pt-4">
+                      <span className={`inline-flex px-2.5 py-1 rounded-xl text-[9px] uppercase tracking-wider font-black ${
+                        func.status === 'ativo'
+                          ? 'bg-emerald-100/80 text-emerald-700'
+                          : 'bg-stone-100/80 text-stone-700'
+                      }`}>
+                        {func.status}
+                      </span>
+                    </div>
+
+                    <button
+                      className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-red-50 text-stone-400 hover:text-red-500 rounded-full shadow-sm backdrop-blur-sm transition-colors opacity-0 group-hover:opacity-100 z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(func.id);
+                      }}
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           ))}
