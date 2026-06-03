@@ -4,31 +4,17 @@ import { FileText, Shield, Handshake, ScrollText } from "lucide-react";
 
 const docs = [
   {
-    title: "Contrato de Prestação de Serviços",
-    description: "Modelo completo para formalizar serviços de obra.",
-    href: "https://docs.google.com",
+    title: "Construção por Administração",
+    description: "Contrato padrão para construção por administração.",
+    href: "https://docs.google.com/document/d/17NZyeUw7xdaqYTMSSRDu8JxndH4ezqdftJ96V5QutGE/edit?usp=sharing",
     icon: <Handshake className="h-4 w-4" />,
     tag: "Google Docs",
   },
   {
-    title: "Contrato de Empreitada",
-    description: "Template para contratos de empreitada global ou parcial.",
-    href: "https://docs.google.com",
+    title: "Construção por Empreitada",
+    description: "Contrato padrão para construção por empreitada.",
+    href: "https://docs.google.com/document/d/1Q_s945I7tBzXEdexRDP8XqmApxMGX8QQqwHlt9ziSkw/edit?usp=sharing",
     icon: <FileText className="h-4 w-4" />,
-    tag: "Google Docs",
-  },
-  {
-    title: "Termo de Responsabilidade",
-    description: "Documento de responsabilidade técnica para obras.",
-    href: "https://docs.google.com",
-    icon: <Shield className="h-4 w-4" />,
-    tag: "Google Docs",
-  },
-  {
-    title: "Distrato de Obra",
-    description: "Modelo para encerrar contratos de forma documentada.",
-    href: "https://docs.google.com",
-    icon: <ScrollText className="h-4 w-4" />,
     tag: "Google Docs",
   },
 ];
