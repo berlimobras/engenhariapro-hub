@@ -3,9 +3,20 @@ import { AppSidebar } from "./AppSidebar";
 import { ThemeToggle } from "./ThemeToggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
+import { Menu, Loader2 } from "lucide-react";
+import { useAdmin } from "@/contexts/AdminContext";
 
 export function AppLayout() {
+  const { isLoading } = useAdmin();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-stone-50 text-orange-600">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen w-full bg-background">
       {/* Desktop sidebar */}

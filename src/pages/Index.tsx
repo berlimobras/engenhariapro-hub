@@ -27,12 +27,26 @@ const DESPESA_COLOR = '#ef4444';
 export default function Dashboard() {
   const { adminUser } = useAdmin();
   const navigate = useNavigate();
-  const { data: metrics, isLoading } = useMetrics(adminUser.companyId);
+  
+  // Safe extraction of companyId
+  const companyId = adminUser?.companyId || '';
+  const { data: metrics, isLoading } = useMetrics(companyId);
 
   if (isLoading) {
     return (
       <div className="space-y-8">
         <div className="text-center py-12">Carregando métricas...</div>
+      </div>
+    );
+  }
+
+  if (!adminUser) {
+    return (
+      <div className="space-y-8">
+        <div className="text-center py-12 text-muted-foreground">
+          Sua conta ainda não está vinculada a nenhuma construtora. 
+          Entre em contato com o suporte ou crie uma nova empresa no cadastro.
+        </div>
       </div>
     );
   }
