@@ -2,12 +2,19 @@ import { useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, Terminal } from "lucide-react";
+import { Copy, Check, Terminal, Search } from "lucide-react";
 import { promptsData, PromptItem } from "@/data/promptsData";
 
 export default function Prompts() {
   const [selectedPrompt, setSelectedPrompt] = useState<PromptItem | null>(null);
   const [copied, setCopied] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const filtered = promptsData.filter(p => 
+    p.title.toLowerCase().includes(search.toLowerCase()) || 
+    p.content.toLowerCase().includes(search.toLowerCase()) ||
+    p.orientation.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleCopy = () => {
     if (selectedPrompt) {
@@ -24,8 +31,19 @@ export default function Prompts() {
         description="Acesse 102 prompts de engenharia avançada. Clique em um card para copiar e colar na sua IA favorita."
       />
 
+      <div className="relative mb-8 max-w-md">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        <input 
+          type="text" 
+          placeholder="Pesquisar prompt..." 
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-11 pr-4 py-3 text-sm rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm"
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {promptsData.map((prompt) => (
+        {filtered.map((prompt) => (
           <div
             key={prompt.id}
             onClick={() => setSelectedPrompt(prompt)}

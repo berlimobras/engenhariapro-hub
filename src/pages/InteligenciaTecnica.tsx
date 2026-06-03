@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import { Bot } from "lucide-react";
+import { Bot, Search } from "lucide-react";
 
 const assistants = [
   {
@@ -74,14 +75,28 @@ const assistants = [
   }
 ];
 
-const InteligenciaTecnica = () => (
-  <div className="animate-fade-in space-y-8 pb-10">
-    <PageHeader
-      title="Agentes de IA Engenharia"
-      description="Hub exclusivo com 14 assistentes especializados em inteligência artificial para maximizar a sua produtividade."
-    />
-    <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {assistants.map((a) => (
+const InteligenciaTecnica = () => {
+  const [search, setSearch] = useState("");
+  const filtered = assistants.filter(a => a.title.toLowerCase().includes(search.toLowerCase()) || a.description.toLowerCase().includes(search.toLowerCase()));
+
+  return (
+    <div className="animate-fade-in space-y-8 pb-10">
+      <PageHeader
+        title="Agentes de IA Engenharia"
+        description="Hub exclusivo com 14 assistentes especializados em inteligência artificial para maximizar a sua produtividade."
+      />
+      <div className="relative mb-8 max-w-md">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+        <input 
+          type="text" 
+          placeholder="Pesquisar agente..." 
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full pl-11 pr-4 py-3 text-sm rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary focus:outline-none transition-all shadow-sm"
+        />
+      </div>
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filtered.map((a) => (
         <a
           key={a.title}
           href={a.href}
@@ -112,6 +127,7 @@ const InteligenciaTecnica = () => (
       ))}
     </div>
   </div>
-);
+  );
+};
 
 export default InteligenciaTecnica;
