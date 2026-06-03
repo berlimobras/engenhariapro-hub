@@ -45,68 +45,68 @@ export default function MasterDashboard() {
   };
 
   return (
-    <div className="space-y-8 pb-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="space-y-6 pb-4">
+      <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Header */}
-        <div className="flex justify-between items-center bg-card p-6 rounded-2xl shadow-sm border border-border">
+        <div className="flex justify-between items-center bg-card p-5 rounded-2xl shadow-sm border border-border">
           <div>
-            <h1 className="text-2xl lg:text-3xl font-black uppercase text-foreground tracking-tight">Portal Master</h1>
-            <p className="text-muted-foreground font-medium mt-1">Gerenciamento global de Construtoras (SaaS)</p>
+            <h1 className="text-xl lg:text-2xl font-black uppercase text-foreground tracking-tight">Portal Master</h1>
+            <p className="text-sm text-muted-foreground font-medium mt-0.5">Gerenciamento global de Construtoras (SaaS)</p>
           </div>
         </div>
 
         {/* Metrics Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="border-none shadow-sm bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase text-stone-500">Construtoras Ativas</CardTitle>
-              <Building2 className="w-5 h-5 text-orange-600" />
+            <CardHeader className="flex flex-row items-center justify-between pb-1 pt-4">
+              <CardTitle className="text-xs font-bold uppercase text-stone-500">Construtoras Ativas</CardTitle>
+              <Building2 className="w-4 h-4 text-orange-600" />
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-black text-stone-900">{metrics.companiesCount}</div>
+            <CardContent className="pb-4">
+              <div className="text-2xl font-black text-stone-900">{metrics.companiesCount}</div>
             </CardContent>
           </Card>
 
           <Card className="border-none shadow-sm bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase text-stone-500">Total de Obras</CardTitle>
-              <HardHat className="w-5 h-5 text-orange-600" />
+            <CardHeader className="flex flex-row items-center justify-between pb-1 pt-4">
+              <CardTitle className="text-xs font-bold uppercase text-stone-500">Total de Obras</CardTitle>
+              <HardHat className="w-4 h-4 text-orange-600" />
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-black text-stone-900">{metrics.obrasCount}</div>
+            <CardContent className="pb-4">
+              <div className="text-2xl font-black text-stone-900">{metrics.obrasCount}</div>
             </CardContent>
           </Card>
 
           <Card className="border-none shadow-sm bg-white">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-bold uppercase text-stone-500">Usuários Cadastrados</CardTitle>
-              <Users className="w-5 h-5 text-orange-600" />
+            <CardHeader className="flex flex-row items-center justify-between pb-1 pt-4">
+              <CardTitle className="text-xs font-bold uppercase text-stone-500">Usuários</CardTitle>
+              <Users className="w-4 h-4 text-orange-600" />
             </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-black text-stone-900">{metrics.usersCount}</div>
+            <CardContent className="pb-4">
+              <div className="text-2xl font-black text-stone-900">{metrics.usersCount}</div>
             </CardContent>
           </Card>
         </div>
 
         {/* List of Companies */}
         <Card className="border-none shadow-sm bg-white">
-          <CardHeader>
-            <CardTitle className="text-lg font-bold uppercase text-stone-900 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-orange-600" /> 
+          <CardHeader className="py-4">
+            <CardTitle className="text-sm font-bold uppercase text-stone-900 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-orange-600" /> 
               Relação de Clientes (Construtoras)
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-4">
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-stone-50 text-stone-500 font-bold uppercase text-xs">
+                <thead className="bg-stone-50 text-stone-500 font-bold uppercase text-[10px]">
                   <tr>
-                    <th className="px-4 py-3 rounded-tl-lg">ID</th>
-                    <th className="px-4 py-3">Nome da Empresa</th>
-                    <th className="px-4 py-3">Média de Obras</th>
-                    <th className="px-4 py-3">Data de Cadastro</th>
-                    <th className="px-4 py-3 rounded-tr-lg text-right">Ação</th>
+                    <th className="px-4 py-2 rounded-tl-lg">ID</th>
+                    <th className="px-4 py-2">Nome da Empresa</th>
+                    <th className="px-4 py-2">Média de Obras</th>
+                    <th className="px-4 py-2">Data de Cadastro</th>
+                    <th className="px-4 py-2 rounded-tr-lg text-right">Ação</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -119,12 +119,12 @@ export default function MasterDashboard() {
                   ) : (
                     companies.map(company => (
                       <tr key={company.id} className="border-b border-stone-100 last:border-0 hover:bg-stone-50 transition-colors">
-                        <td className="px-4 py-4 font-mono text-xs text-stone-400">{company.id.split('-')[0]}...</td>
-                        <td className="px-4 py-4 font-bold text-stone-900">{company.name}</td>
-                        <td className="px-4 py-4 text-stone-600">{company.website?.replace('Média de Obras: ', '') || 'N/A'}</td>
-                        <td className="px-4 py-4 text-stone-600">{new Date(company.created_at).toLocaleDateString('pt-BR')}</td>
-                        <td className="px-4 py-4 text-right">
-                          <button className="text-xs font-bold text-stone-400 hover:text-orange-600 uppercase">
+                        <td className="px-4 py-2 font-mono text-[10px] text-stone-400">{company.id.split('-')[0]}...</td>
+                        <td className="px-4 py-2 font-bold text-stone-900 text-xs">{company.name}</td>
+                        <td className="px-4 py-2 text-stone-600 text-xs">{company.website?.replace('Média de Obras: ', '') || 'N/A'}</td>
+                        <td className="px-4 py-2 text-stone-600 text-xs">{new Date(company.created_at).toLocaleDateString('pt-BR')}</td>
+                        <td className="px-4 py-2 text-right">
+                          <button className="text-[10px] font-bold text-stone-400 hover:text-orange-600 uppercase">
                             Gerenciar
                           </button>
                         </td>
