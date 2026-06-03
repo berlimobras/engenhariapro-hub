@@ -43,9 +43,9 @@ export function AppLayout() {
             </Sheet>
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-xl bg-primary flex items-center justify-center">
-                <span className="text-[12px] font-black text-white">EP</span>
+                <span className="text-[12px] font-black text-white">OM</span>
               </div>
-              <span className="text-base font-bold text-foreground tracking-tight">EngenhariaPro</span>
+              <span className="text-base font-bold text-foreground tracking-tight">Obradomestre</span>
             </div>
           </div>
           <ThemeToggle />

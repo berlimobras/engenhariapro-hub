@@ -44,7 +44,7 @@ export function AppSidebar({ isMobile }: { isMobile?: boolean }) {
             <HardHat className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-base font-bold text-sidebar-foreground leading-tight truncate">EngenhariaPro</p>
+            <p className="text-base font-bold text-sidebar-foreground leading-tight truncate">Obradomestre</p>
             <p className="text-[11px] text-sidebar-foreground/50 font-medium">Hub de Ferramentas</p>
           </div>
         </div>
@@ -101,7 +101,7 @@ export function AppSidebar({ isMobile }: { isMobile?: boolean }) {
           <HardHat className="h-5 w-5" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-base font-bold text-sidebar-foreground leading-tight truncate">EngenhariaPro</p>
+          <p className="text-base font-bold text-sidebar-foreground leading-tight truncate">Obradomestre</p>
           <p className="text-[11px] text-sidebar-foreground/50 font-medium">Hub de Ferramentas</p>
         </div>
         <ThemeToggle />
