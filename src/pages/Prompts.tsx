@@ -2,13 +2,17 @@ import { useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Copy, Check, Terminal, Search } from "lucide-react";
+import { Copy, Check, Terminal, Search, LockKeyhole } from "lucide-react";
 import { promptsData, PromptItem } from "@/data/promptsData";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 export default function Prompts() {
   const [selectedPrompt, setSelectedPrompt] = useState<PromptItem | null>(null);
   const [copied, setCopied] = useState(false);
   const [search, setSearch] = useState("");
+  const { isSubscribed } = useSubscription();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const filtered = promptsData.filter(p => 
     p.title.toLowerCase().includes(search.toLowerCase()) || 
@@ -43,33 +47,48 @@ export default function Prompts() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filtered.map((prompt) => (
-          <div
-            key={prompt.id}
-            onClick={() => setSelectedPrompt(prompt)}
-            className="group cursor-pointer rounded-3xl border border-border/50 bg-card p-6 flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden aspect-[4/3]"
-          >
-            {/* Decoração sutil de fundo */}
-            <div className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
-            
-            <div className="w-12 h-12 rounded-2xl bg-stone-100 flex items-center justify-center mb-4 border border-border/50 group-hover:bg-primary group-hover:border-primary transition-colors duration-300 shadow-sm shrink-0">
-              <Terminal className="w-5 h-5 text-stone-600 group-hover:text-white transition-colors" />
-            </div>
+        {filtered.map((prompt, index) => {
+          const isLocked = !isSubscribed && index >= 10;
+          
+          return (
+            <div
+              key={prompt.id}
+              onClick={() => {
+                if (isLocked) {
+                  setShowUpgradeModal(true);
+                } else {
+                  setSelectedPrompt(prompt);
+                }
+              }}
+              className="group cursor-pointer rounded-3xl border border-border/50 bg-card p-6 flex flex-col shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden aspect-[4/3]"
+            >
+              {isLocked && (
+                <div className="absolute inset-0 z-10 bg-background/80 backdrop-blur-[2px] flex items-center justify-center rounded-3xl transition-all group-hover:bg-background/90">
+                  <div className="bg-amber-500 text-white p-3 rounded-full shadow-lg">
+                    <LockKeyhole className="w-6 h-6" />
+                  </div>
+                </div>
+              )}
+              
+              <div className="w-12 h-12 rounded-2xl bg-stone-100 flex items-center justify-center mb-4 border border-border/50 group-hover:bg-primary group-hover:border-primary transition-colors duration-300 shadow-sm shrink-0">
+                <Terminal className="w-5 h-5 text-stone-600 group-hover:text-white transition-colors" />
+              </div>
 
-            <div className="mb-auto">
-              <span className="text-[10px] font-black uppercase tracking-widest text-primary/70 mb-2 block">Prompt #{prompt.id}</span>
-              <h3 className="font-bold text-foreground text-base leading-tight group-hover:text-primary transition-colors line-clamp-3">
-                {prompt.title}
-              </h3>
+              <div className="mb-auto">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary/70 mb-2 block">Prompt #{prompt.id}</span>
+                <h3 className="font-bold text-foreground text-base leading-tight group-hover:text-primary transition-colors line-clamp-3">
+                  {prompt.title}
+                </h3>
+              </div>
+              
+              <div className="mt-4 pt-4 border-t border-border/50">
+                <span className="text-xs font-bold text-muted-foreground group-hover:text-primary flex items-center gap-1 transition-colors uppercase tracking-widest">
+                  Visualizar Prompt &rarr;
+                </span>
+              </div>
             </div>
-            
-            <div className="mt-4 pt-4 border-t border-border/50">
-              <span className="text-xs font-bold text-muted-foreground group-hover:text-primary flex items-center gap-1 transition-colors uppercase tracking-widest">
-                Visualizar Prompt &rarr;
-              </span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <Dialog open={!!selectedPrompt} onOpenChange={(open) => !open && setSelectedPrompt(null)}>
@@ -124,6 +143,12 @@ export default function Prompts() {
           )}
         </DialogContent>
       </Dialog>
+
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+        featureName="Biblioteca Ilimitada de Prompts"
+      />
     </div>
   );
 }

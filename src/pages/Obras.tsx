@@ -7,8 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Building2, ImageIcon, MapPin } from 'lucide-react';
+import { Plus, Trash2, Building2, ImageIcon, MapPin, LockKeyhole } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { UpgradeModal } from '@/components/UpgradeModal';
 
 export default function Obras() {
   const { adminUser } = useAdmin();
@@ -16,6 +18,8 @@ export default function Obras() {
   const createObra = useCreateObra();
   const deleteObra = useDeleteObra();
   const navigate = useNavigate();
+  const { isSubscribed } = useSubscription();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -172,9 +176,22 @@ export default function Obras() {
           {obras.map((obra) => (
             <div
               key={obra.id}
-              onClick={() => navigate(`/obras/${obra.id}`)}
+              onClick={() => {
+                if (!isSubscribed) {
+                  setShowUpgradeModal(true);
+                } else {
+                  navigate(`/obras/${obra.id}`);
+                }
+              }}
               className="group relative flex flex-col rounded-3xl border border-border/50 bg-card overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 aspect-[4/5]"
             >
+              {!isSubscribed && (
+                <div className="absolute inset-0 z-20 bg-background/80 backdrop-blur-[2px] flex items-center justify-center transition-all group-hover:bg-background/90">
+                  <div className="bg-amber-500 text-white p-3 rounded-full shadow-lg">
+                    <LockKeyhole className="w-6 h-6" />
+                  </div>
+                </div>
+              )}
               {/* Image Header */}
               <div className="h-2/5 w-full bg-stone-100 relative overflow-hidden">
                 {obra.image_url ? (
@@ -230,6 +247,12 @@ export default function Obras() {
           ))}
         </div>
       )}
+      
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+        featureName="Acesso as Obras e Relatórios"
+      />
     </div>
   );
 }

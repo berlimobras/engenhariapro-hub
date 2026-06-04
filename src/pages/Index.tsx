@@ -10,8 +10,11 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import {
-  Building2, TrendingUp, TrendingDown, Users,
+  Building2, TrendingUp, TrendingDown, Users, Info, LockKeyhole
 } from 'lucide-react';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { UpgradeModal } from '@/components/UpgradeModal';
+import { useState } from 'react';
 
 const OBRA_STATUS_COLORS: Record<string, string> = {
   em_andamento: '#10b981',
@@ -27,6 +30,8 @@ const DESPESA_COLOR = '#ef4444';
 export default function Dashboard() {
   const { adminUser } = useAdmin();
   const navigate = useNavigate();
+  const { isSubscribed } = useSubscription();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
   // Safe extraction of companyId
   const companyId = adminUser?.companyId || '';
@@ -65,12 +70,24 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-8 pb-6">
+      {/* Aviso de Atualização */}
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 flex items-center gap-3">
+        <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
+        <p className="text-sm text-blue-800 dark:text-blue-300">
+          <strong>Dashboard de Demonstração.</strong> Última atualização dos dados financeiros: <strong>Hoje</strong>. 
+          {!isSubscribed && " Assine a plataforma para interagir e visualizar os relatórios completos."}
+        </p>
+      </div>
+
       {/* ════════════════════════════════════════════════════════════
           ROW 1: KPI CARDS (4 columns)
       ════════════════════════════════════════════════════════════ */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Obras Ativas */}
-        <Card onClick={() => navigate('/obras')} className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl cursor-pointer hover:border-primary/30">
+        <Card onClick={() => {
+          if (!isSubscribed) setShowUpgradeModal(true);
+          else navigate('/obras');
+        }} className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl cursor-pointer hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
             <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Obras Ativas
@@ -131,7 +148,10 @@ export default function Dashboard() {
         </Card>
 
         {/* Funcionários Ativos */}
-        <Card onClick={() => navigate('/funcionarios')} className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl cursor-pointer hover:border-primary/30">
+        <Card onClick={() => {
+          if (!isSubscribed) setShowUpgradeModal(true);
+          else navigate('/funcionarios');
+        }} className="border-0 shadow-sm bg-card hover-lift transition-all rounded-2xl cursor-pointer hover:border-primary/30">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 pt-5">
             <CardTitle className="text-[13px] font-semibold text-muted-foreground uppercase tracking-wider">
               Funcionários Ativos
@@ -261,7 +281,10 @@ export default function Dashboard() {
                   return (
                     <div 
                       key={obra.id} 
-                      onClick={() => navigate(`/obras/${obra.id}`)}
+                      onClick={() => {
+                        if (!isSubscribed) setShowUpgradeModal(true);
+                        else navigate(`/obras/${obra.id}`);
+                      }}
                       className="space-y-2 p-3 rounded-xl border border-border/40 hover:border-primary/30 hover:bg-muted/30 cursor-pointer transition-colors"
                     >
                       <div className="flex items-start justify-between">
@@ -322,7 +345,10 @@ export default function Dashboard() {
                 {metrics.topFuncionarios.map((func, idx) => (
                   <div
                     key={func.id}
-                    onClick={() => navigate(`/funcionarios/${func.id}`)}
+                    onClick={() => {
+                      if (!isSubscribed) setShowUpgradeModal(true);
+                      else navigate(`/funcionarios/${func.id}`);
+                    }}
                     className="flex items-start justify-between p-3 rounded-xl border border-border/40 hover:border-primary/30 hover:bg-muted/30 cursor-pointer transition-colors"
                   >
                     <div className="flex-1 min-w-0">
@@ -356,6 +382,12 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+        featureName="Acesso as Obras e Relatórios"
+      />
     </div>
   );
 }

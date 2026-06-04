@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "./contexts/AdminContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { SubscriptionProvider } from "./contexts/SubscriptionContext";
 import { AppLayout } from "./components/AppLayout";
 
 import { AuthGuard } from "./components/AuthGuard";
@@ -36,8 +38,10 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <AdminProvider>
-        <BrowserRouter>
+      <AuthProvider>
+        <SubscriptionProvider>
+          <AdminProvider>
+            <BrowserRouter>
           <Routes>
             {/* Rotas Públicas */}
             <Route path="/login" element={<Login />} />
@@ -72,6 +76,8 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </AdminProvider>
+    </SubscriptionProvider>
+  </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

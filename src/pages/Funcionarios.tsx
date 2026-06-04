@@ -7,8 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeader } from '@/components/PageHeader';
 import { toast } from 'sonner';
-import { Plus, Trash2, Users, Pencil, Briefcase } from 'lucide-react';
+import { Plus, Trash2, Users, Pencil, Briefcase, LockKeyhole } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useSubscription } from '@/contexts/SubscriptionContext';
+import { UpgradeModal } from '@/components/UpgradeModal';
 
 export default function Funcionarios() {
   const { adminUser } = useAdmin();
@@ -16,6 +18,8 @@ export default function Funcionarios() {
   const createFuncionario = useCreateFuncionario();
   const deleteFuncionario = useDeleteFuncionario();
   const navigate = useNavigate();
+  const { isSubscribed } = useSubscription();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -247,9 +251,22 @@ export default function Funcionarios() {
                 {groupedFuncionarios[role].map((func) => (
                   <div
                     key={func.id}
-                    onClick={() => navigate(`/funcionarios/${func.id}`)}
-                    className="group relative flex flex-col items-center text-center rounded-3xl border border-border/50 bg-card p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 aspect-square"
+                    onClick={() => {
+                      if (!isSubscribed) {
+                        setShowUpgradeModal(true);
+                      } else {
+                        navigate(`/funcionarios/${func.id}`);
+                      }
+                    }}
+                    className="group relative flex flex-col items-center text-center rounded-3xl border border-border/50 bg-card p-5 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer hover:-translate-y-1 aspect-square overflow-hidden"
                   >
+                    {!isSubscribed && (
+                      <div className="absolute inset-0 z-20 bg-background/80 backdrop-blur-[2px] flex items-center justify-center transition-all group-hover:bg-background/90 rounded-3xl">
+                        <div className="bg-amber-500 text-white p-3 rounded-full shadow-lg">
+                          <LockKeyhole className="w-6 h-6" />
+                        </div>
+                      </div>
+                    )}
                     <div className="w-20 h-20 rounded-full bg-stone-100 flex items-center justify-center mb-4 overflow-hidden ring-4 ring-white shadow-sm">
                       {func.photo_url ? (
                         <img src={func.photo_url} alt={func.name} className="w-full h-full object-cover" />
@@ -287,6 +304,12 @@ export default function Funcionarios() {
           ))}
         </div>
       )}
+      
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+        featureName="Acesso a Perfil de Funcionários"
+      />
     </div>
   );
 }

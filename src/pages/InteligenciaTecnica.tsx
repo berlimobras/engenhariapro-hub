@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { PageHeader } from "@/components/PageHeader";
-import { Bot, Search } from "lucide-react";
+import { Bot, Search, LockKeyhole } from "lucide-react";
+import { useSubscription } from "@/contexts/SubscriptionContext";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 const assistants = [
   {
@@ -77,6 +79,8 @@ const assistants = [
 
 const InteligenciaTecnica = () => {
   const [search, setSearch] = useState("");
+  const { isSubscribed } = useSubscription();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const filtered = assistants.filter(a => a.title.toLowerCase().includes(search.toLowerCase()) || a.description.toLowerCase().includes(search.toLowerCase()));
 
   return (
@@ -96,14 +100,28 @@ const InteligenciaTecnica = () => {
         />
       </div>
       <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {filtered.map((a) => (
-        <a
-          key={a.title}
-          href={a.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex flex-col rounded-3xl border border-border/50 bg-card p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 aspect-[4/5] relative overflow-hidden"
-        >
+        {filtered.map((a, index) => {
+          const isLocked = !isSubscribed && index >= 5;
+
+          return (
+            <div
+              key={a.title}
+              onClick={() => {
+                if (isLocked) {
+                  setShowUpgradeModal(true);
+                } else {
+                  window.open(a.href, "_blank", "noopener,noreferrer");
+                }
+              }}
+              className="group flex flex-col rounded-3xl border border-border/50 bg-card p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 aspect-[4/5] relative overflow-hidden cursor-pointer"
+            >
+              {isLocked && (
+                <div className="absolute inset-0 z-10 bg-background/80 backdrop-blur-[2px] flex items-center justify-center rounded-3xl transition-all group-hover:bg-background/90">
+                  <div className="bg-amber-500 text-white p-3 rounded-full shadow-lg">
+                    <LockKeyhole className="w-6 h-6" />
+                  </div>
+                </div>
+              )}
           {/* Fundo decorativo colorido bem suave */}
           <div className="absolute -top-16 -right-16 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
           
@@ -119,14 +137,20 @@ const InteligenciaTecnica = () => {
             {a.description}
           </p>
           
-          <div className="mt-6 pt-4 border-t border-border/50 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-primary">
-            <span>Acessar Agente</span>
-            <span className="text-lg leading-none">&rarr;</span>
-          </div>
-        </a>
-      ))}
+              <div className="mt-6 pt-4 border-t border-border/50 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-primary">
+                <span>Acessar Agente</span>
+                <span className="text-lg leading-none">&rarr;</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <UpgradeModal 
+        isOpen={showUpgradeModal} 
+        onClose={() => setShowUpgradeModal(false)} 
+        featureName="Agentes de IA Ilimitados"
+      />
     </div>
-  </div>
   );
 };
 
