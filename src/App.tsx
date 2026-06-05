@@ -24,6 +24,7 @@ import FuncionarioPerfil from "./pages/FuncionarioPerfil";
 import InteligenciaTecnica from "./pages/InteligenciaTecnica";
 import Marketing from "./pages/Marketing";
 import Planilhas from "./pages/Planilhas";
+import Planos from "./pages/Planos";
 import Prompts from "./pages/Prompts";
 import Contratos from "./pages/Contratos";
 import Checklists from "./pages/Checklists";
