@@ -28,10 +28,10 @@ export default function Planos() {
     },
     {
       name: 'Anual',
-      price: 684,
+      price: 57,
       currency: 'BRL',
-      period: 'ano',
-      description: 'Economia e tranquilidade o ano todo',
+      period: 'mês',
+      description: 'Pagamento único de R$ 684/ano (equivale a R$ 57/mês)',
       features: [
         'Todos os recursos do Mensal',
         '1 ano de acesso ininterrupto',
