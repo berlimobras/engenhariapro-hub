@@ -24,23 +24,23 @@ export default async function handler(req: any, res: any) {
     // Como estamos apenas implementando a arquitetura com chaves de teste novas,
     // nós vamos criar o Produto e o Preço On-the-fly para o checkout caso não tenhamos o ID.
     // O ideal é colocar os IDs fixos aqui:
-    if (planName === 'Pro') {
-      priceId = process.env.STRIPE_PRICE_ID_PRO || ''; 
-    } else if (planName === 'Enterprise') {
-      priceId = process.env.STRIPE_PRICE_ID_ENTERPRISE || '';
+    if (planName === 'Mensal') {
+      priceId = process.env.STRIPE_PRICE_ID_MENSAL || ''; 
+    } else if (planName === 'Anual') {
+      priceId = process.env.STRIPE_PRICE_ID_ANUAL || '';
     }
 
     // Como você ainda não criou os produtos no painel, vamos criar dinamicamente apenas para este teste funcionar:
     if (!priceId) {
       const product = await stripe.products.create({
         name: `Plano ${planName} - EngenhariaPro`,
-        description: 'Assinatura mensal do CRM',
+        description: `Assinatura ${planName} do CRM`,
       });
       const price = await stripe.prices.create({
         product: product.id,
-        unit_amount: planName === 'Pro' ? 9900 : 29900, // em centavos (R$ 99,00)
+        unit_amount: planName === 'Mensal' ? 5700 : 68400, // em centavos
         currency: 'brl',
-        recurring: { interval: 'month' },
+        recurring: { interval: planName === 'Mensal' ? 'month' : 'year' },
       });
       priceId = price.id;
     }
