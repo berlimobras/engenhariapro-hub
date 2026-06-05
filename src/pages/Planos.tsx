@@ -46,9 +46,33 @@ export default function Planos() {
   const handleSubscribe = async (planName: string) => {
     setLoading(true);
     try {
-      // TODO: Integrar com Stripe
-      toast.info(`Integrando com Stripe para plano ${planName}...`);
+      if (!user) {
+        toast.error('Você precisa estar logado para assinar.');
+        return;
+      }
+      
+      const response = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planName,
+          userId: user.id,
+          userEmail: user.email,
+          returnUrl: window.location.origin,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        toast.error(data.error || 'Erro ao criar sessão de pagamento');
+      }
     } catch (error) {
+      console.error(error);
       toast.error('Erro ao processar pagamento');
     } finally {
       setLoading(false);
