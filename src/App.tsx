@@ -25,6 +25,7 @@ import InteligenciaTecnica from "./pages/InteligenciaTecnica";
 import Marketing from "./pages/Marketing";
 import Planilhas from "./pages/Planilhas";
 import Planos from "./pages/Planos";
+import LandingPage from "./pages/LandingPage";
 import Prompts from "./pages/Prompts";
 import Contratos from "./pages/Contratos";
 import Checklists from "./pages/Checklists";
@@ -43,43 +44,44 @@ const App = () => (
         <SubscriptionProvider>
           <AdminProvider>
             <BrowserRouter>
-          <Routes>
-            {/* Rotas Públicas */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+              <Routes>
+                {/* Rota Pública Independente (Landing Page) */}
+                <Route path="/lp" element={<LandingPage />} />
+                
+                {/* Rotas Públicas */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-            {/* Rotas Master Admin foram movidas para dentro do AppLayout */}
-
-            {/* Rotas Protegidas (Para clientes construtoras) */}
-            <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
-              {/* Rota Master Admin (Exclusiva) */}
-              <Route path="/admin/dashboard" element={<MasterAdminGuard><MasterDashboard /></MasterAdminGuard>} />
-              
-              <Route path="/" element={<Index />} />
-              <Route path="/obras" element={<Obras />} />
-              <Route path="/obras/:id" element={<ObraDashboard />} />
-              <Route path="/funcionarios" element={<Funcionarios />} />
-              <Route path="/funcionarios/:id" element={<FuncionarioPerfil />} />
-              <Route path="/ferramentas/inteligencia" element={<InteligenciaTecnica />} />
-              <Route path="/ferramentas/marketing" element={<Marketing />} />
-              <Route path="/ferramentas/planilhas" element={<Planilhas />} />
-              <Route path="/planos" element={<Planos />} />
-              <Route path="/ferramentas/prompts" element={<Prompts />} />
-              <Route path="/ferramentas/contratos" element={<Contratos />} />
-              <Route path="/ferramentas/checklists" element={<Checklists />} />
-              <Route path="/atualizacoes" element={<Atualizacoes />} />
-              <Route path="/configuracoes" element={<Configuracoes />} />
-            </Route>
-            
-            {/* Relatório protegido (se desejar, ou público se passar por ID longo) */}
-            <Route path="/obras/:id/relatorio" element={<AuthGuard><ObraRelatorio /></AuthGuard>} />
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </AdminProvider>
-    </SubscriptionProvider>
-  </AuthProvider>
+                {/* Rotas Protegidas (Para clientes construtoras) */}
+                <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
+                  {/* Rota Master Admin (Exclusiva) */}
+                  <Route path="/admin/dashboard" element={<MasterAdminGuard><MasterDashboard /></MasterAdminGuard>} />
+                  
+                  <Route path="/" element={<Index />} />
+                  <Route path="/obras" element={<Obras />} />
+                  <Route path="/obras/:id" element={<ObraDashboard />} />
+                  <Route path="/funcionarios" element={<Funcionarios />} />
+                  <Route path="/funcionarios/:id" element={<FuncionarioPerfil />} />
+                  <Route path="/ferramentas/inteligencia" element={<InteligenciaTecnica />} />
+                  <Route path="/ferramentas/marketing" element={<Marketing />} />
+                  <Route path="/ferramentas/planilhas" element={<Planilhas />} />
+                  <Route path="/planos" element={<Planos />} />
+                  <Route path="/ferramentas/prompts" element={<Prompts />} />
+                  <Route path="/ferramentas/contratos" element={<Contratos />} />
+                  <Route path="/ferramentas/checklists" element={<Checklists />} />
+                  <Route path="/atualizacoes" element={<Atualizacoes />} />
+                  <Route path="/configuracoes" element={<Configuracoes />} />
+                </Route>
+                
+                {/* Relatório protegido */}
+                <Route path="/obras/:id/relatorio" element={<AuthGuard><ObraRelatorio /></AuthGuard>} />
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </AdminProvider>
+        </SubscriptionProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
